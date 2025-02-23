@@ -92,7 +92,7 @@ export class DocumentService {
         return {
           success: false,
           error: {
-            code: error.code,
+            code: error.code || 'VALIDATION_ERROR',
             message: error.message,
             details: { field: error.field },
           },
