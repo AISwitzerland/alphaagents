@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from '@/types/constants';

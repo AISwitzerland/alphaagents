@@ -1,3 +1,5 @@
+'use client';
+
 import { ChatUpload } from '@/components/chat/ChatUpload';
 
 export default function ChatPage() {
