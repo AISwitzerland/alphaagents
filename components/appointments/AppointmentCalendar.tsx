@@ -12,6 +12,7 @@ export function AppointmentCalendar({ onSelectSlot, onBack }: AppointmentCalenda
   const [availableSlots, setAvailableSlots] = useState<Date[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const appointmentService = AppointmentService.getInstance();
 
   // Generate calendar days
   const generateCalendarDays = () => {
@@ -40,7 +41,7 @@ export function AppointmentCalendar({ onSelectSlot, onBack }: AppointmentCalenda
       if (isWeekend(date)) {
         setAvailableSlots([]);
       } else {
-        const slots = await AppointmentService.getAvailableSlots(date);
+        const slots = await appointmentService.getAvailableSlots(date);
         setAvailableSlots(slots);
       }
     } catch (err) {
