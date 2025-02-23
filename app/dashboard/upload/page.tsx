@@ -9,7 +9,7 @@ export default function UploadPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
-          <DocumentUpload />
+          <DocumentUpload source="dashboard" />
         </div>
         <div className="bg-white p-6 rounded-lg shadow-lg space-y-4">
           <h2 className="text-xl font-semibold text-gray-900">Hinweise</h2>
