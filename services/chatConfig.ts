@@ -3,7 +3,7 @@ import { SupportedLanguages } from '../types';
 export const CHAT_CONFIG = {
   // OpenAI Konfiguration
   openai: {
-    model: 'gpt-4o',
+    model: 'gpt-4',
     maxTokens: 4096,
     temperature: 0.7,
     systemPrompt: `Du bist ein freundlicher Versicherungsassistent für ein Schweizer Versicherungsunternehmen.

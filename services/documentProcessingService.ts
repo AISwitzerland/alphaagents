@@ -222,7 +222,7 @@ export async function testOpenAIKey(): Promise<{ isValid: boolean; error?: strin
     console.log('API Key (erste 5 Zeichen):', process.env.OPENAI_API_KEY?.substring(0, 5));
     
     const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-4",
       messages: [{ role: "user", content: "Test" }],
       max_tokens: 5
     });
