@@ -7,4 +7,5 @@ export * from './document';
 export * from './constants';
 export * from './intent';
 export * from './chat';
-export * from './processing'; 
+export * from './processing';
+export * from './faq'; 
