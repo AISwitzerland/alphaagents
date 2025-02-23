@@ -8,4 +8,5 @@ export * from './constants';
 export * from './intent';
 export * from './chat';
 export * from './processing';
-export * from './faq'; 
+export * from './faq';
+export * from './ocr'; 

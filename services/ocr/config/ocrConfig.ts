@@ -1,3 +1,5 @@
+import { OCRLanguage } from '@/types/ocr';
+
 export interface LogMessage {
   status: string;
   progress?: number;
@@ -42,6 +44,10 @@ export const OCR_CONFIG = {
       quality: 90,
       format: 'png',
     },
+    pdf: {
+      density: 300,
+      format: 'png',
+    },
     timeout: 30000, // 30 Sekunden
   },
 
@@ -62,4 +68,17 @@ export const OCR_CONFIG = {
       },
     },
   },
-};
+
+  ocr: {
+    languages: ['deu', 'eng', 'fra', 'ita'] as OCRLanguage[],
+    defaultLanguage: 'deu' as OCRLanguage,
+    timeout: 30000,
+    retries: 3,
+    retryDelay: 1000,
+  },
+
+  output: {
+    defaultFormat: 'text' as const,
+    supportedFormats: ['text', 'json', 'pdf', 'hocr'] as const,
+  },
+} as const;

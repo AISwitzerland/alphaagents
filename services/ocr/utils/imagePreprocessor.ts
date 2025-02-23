@@ -5,6 +5,13 @@ import { fromPath } from 'pdf2pic';
 import { writeFileSync, unlinkSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
+import { PreprocessingResult } from '@/types/ocr';
+
+async function createTempFile(): Promise<string> {
+  const timestamp = Date.now();
+  const tempDir = tmpdir();
+  return join(tempDir, `temp-${timestamp}.png`);
+}
 
 export class ImagePreprocessor {
   async preprocessImage(buffer: Buffer, mimeType: string): Promise<Buffer> {
@@ -176,8 +183,50 @@ export const imagePreprocessor = new ImagePreprocessor();
 export async function preprocessImage(imagePath: string): Promise<PreprocessingResult> {
   try {
     const tempPath = await createTempFile();
-    // ... existing code ...
+    const image = sharp(imagePath);
+    const metadata = await image.metadata();
+
+    // Process image
+    await image
+      .resize({
+        width: OCR_CONFIG.processing.imageOptimization.maxWidth,
+        height: OCR_CONFIG.processing.imageOptimization.maxHeight,
+        fit: 'inside',
+        withoutEnlargement: true,
+      })
+      .normalize()
+      .sharpen()
+      .gamma(1.1)
+      .toFile(tempPath);
+
+    return {
+      processedImagePath: tempPath,
+      metadata: {
+        originalSize: {
+          width: metadata.width || 0,
+          height: metadata.height || 0,
+        },
+        processedSize: {
+          width: OCR_CONFIG.processing.imageOptimization.maxWidth,
+          height: OCR_CONFIG.processing.imageOptimization.maxHeight,
+        },
+        dpi: metadata.density || 72,
+        format: metadata.format || 'unknown',
+        enhancementApplied: {
+          contrast: true,
+          brightness: true,
+          denoise: false,
+          sharpen: true,
+        },
+        orientation: metadata.orientation || 0,
+      },
+      tempFiles: [tempPath],
+    };
   } catch (error) {
-    // ... existing code ...
+    throw new ProcessingError(
+      'Image preprocessing failed',
+      'PREPROCESSING_ERROR',
+      error instanceof Error ? error : undefined
+    );
   }
 }
