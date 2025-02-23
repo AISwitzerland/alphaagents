@@ -1,5 +1,5 @@
 import {
-  ProcessingStatus,
+  ProcessingState,
   ProcessingStep,
   ProcessingProgress,
   ProcessingError,

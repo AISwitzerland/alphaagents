@@ -6,4 +6,5 @@ export * from './database';
 export * from './document';
 export * from './constants';
 export * from './intent';
-export * from './chat'; 
+export * from './chat';
+export * from './processing'; 

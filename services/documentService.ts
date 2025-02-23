@@ -53,7 +53,7 @@ export class DocumentService {
   ): Promise<UploadResult> {
     try {
       // Validiere Dateityp
-      if (!ALLOWED_FILE_TYPES.all.includes(file.type)) {
+      if (!ALLOWED_FILE_TYPES.includes(file.type)) {
         throw new ValidationError('Nicht unterstützter Dateityp', 'file', 'INVALID_FILE_TYPE');
       }
 

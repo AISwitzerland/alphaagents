@@ -3,7 +3,7 @@ export interface ErrorWithMessage {
 }
 
 export class ValidationError extends Error {
-  constructor(message: string, public field?: string) {
+  constructor(message: string, public field?: string, public code?: string) {
     super(message);
     this.name = 'ValidationError';
   }
