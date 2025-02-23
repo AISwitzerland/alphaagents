@@ -41,7 +41,7 @@ export function validateInput(step: DataCollectionStep, input: string): string |
   return null;
 }
 
-export function getNextStep(currentStep: DataCollectionStep, collectedData: Record<string, any> = {}): DataCollectionStep {
+export function getNextStep(currentStep: DataCollectionStep): DataCollectionStep {
   switch (currentStep) {
     case 'collecting_name':
       return 'collecting_email';
@@ -101,7 +101,7 @@ export function updateDataCollectionState(
   return {
     ...state,
     data: updatedData,
-    step: getNextStep(state.step, input),
+    step: getNextStep(state.step),
     retries: 0,
   };
 }
