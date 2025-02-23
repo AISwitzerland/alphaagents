@@ -13,7 +13,7 @@ const documents: Document[] = [
     id: '1',
     type: 'accident_report',
     status: {
-      status: 'completed',
+      status: 'abgeschlossen',
       progress: 100,
       message: 'Erfolgreich verarbeitet'
     },
@@ -36,7 +36,7 @@ const documents: Document[] = [
     id: '2',
     type: 'invoice',
     status: {
-      status: 'processing',
+      status: 'in_bearbeitung',
       progress: 50,
       message: 'Wird verarbeitet'
     },
@@ -59,7 +59,7 @@ const documents: Document[] = [
     id: '3',
     type: 'contract_change',
     status: {
-      status: 'pending',
+      status: 'eingereicht',
       progress: 0,
       message: 'Warten auf Verarbeitung'
     },
@@ -89,17 +89,19 @@ const documentTypes: { [key in DocumentType]: string } = {
 };
 
 const statusColors = {
-  completed: 'bg-green-100 text-green-800',
-  processing: 'bg-yellow-100 text-yellow-800',
-  pending: 'bg-gray-100 text-gray-800',
-  failed: 'bg-red-100 text-red-800',
+  eingereicht: 'bg-yellow-100 text-yellow-800',
+  in_bearbeitung: 'bg-blue-100 text-blue-800',
+  abgeschlossen: 'bg-green-100 text-green-800',
+  archiviert: 'bg-gray-100 text-gray-800',
+  storniert: 'bg-red-100 text-red-800',
 };
 
 const statusLabels = {
-  completed: 'Abgeschlossen',
-  processing: 'In Bearbeitung',
-  pending: 'Ausstehend',
-  failed: 'Fehlgeschlagen',
+  eingereicht: 'Eingereicht',
+  in_bearbeitung: 'In Bearbeitung',
+  abgeschlossen: 'Abgeschlossen',
+  archiviert: 'Archiviert',
+  storniert: 'Storniert',
 };
 
 export default function DocumentsPage() {
