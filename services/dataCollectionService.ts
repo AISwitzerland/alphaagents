@@ -1,4 +1,4 @@
-import { DataCollectionStep, UserContactData, DataCollectionState } from '../types';
+import { DataCollectionStep, UserContactData, DataCollectionState } from '@/types/chat';
 
 export function getNextPrompt(step: DataCollectionStep, data: Partial<UserContactData>): string {
   switch (step) {

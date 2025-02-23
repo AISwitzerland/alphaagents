@@ -9,6 +9,19 @@ export interface Message {
   fileName?: string;
 }
 
+export interface UserContactData {
+  name?: string;
+  email?: string;
+  phone?: string;
+}
+
+export interface DataCollectionState {
+  step: DataCollectionStep;
+  data: UserContactData;
+  confirmed: boolean;
+  retries: number;
+}
+
 export type ChatFlowType = 
   | 'idle'
   | 'document_upload'
