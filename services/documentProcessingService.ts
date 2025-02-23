@@ -225,17 +225,24 @@ export async function createAccidentReport(documentId: string, extractedData: an
 
 export async function createDamageReport(documentId: string, extractedData: any) {
   try {
+    // Parse date if it exists
+    let schadenDatum = null;
+    const rawDate = extractedData.schaden_datum || extractedData.aenderung?.datum;
+    if (rawDate) {
+      schadenDatum = rawDate.includes('.') ? parseDEDate(rawDate) : rawDate;
+    }
+
     const { data: damageReport, error } = await supabase
       .from('damage_reports')
       .insert({
         document_id: documentId,
-        versicherungsnummer: extractedData.versicherungsnummer || '',
-        name: extractedData.name || '',
-        adresse: extractedData.adresse || '',
-        schaden_datum: extractedData.schaden_datum || null,
-        schaden_ort: extractedData.schaden_ort || '',
-        schaden_beschreibung: extractedData.schaden_beschreibung || '',
-        zusammenfassung: extractedData.zusammenfassung || '',
+        versicherungsnummer: extractedData.versicherungsnummer || extractedData.vertragsnummer || '',
+        name: extractedData.name || extractedData.kunde?.name || extractedData.versicherter?.name || '',
+        adresse: extractedData.adresse || `${extractedData.kunde?.adresse || ''}, ${extractedData.kunde?.plz || ''}, ${extractedData.kunde?.ort || ''}`,
+        schaden_datum: schadenDatum,
+        schaden_ort: extractedData.schaden_ort || extractedData.kunde?.ort || '',
+        schaden_beschreibung: extractedData.schaden_beschreibung || extractedData.aenderung?.beschreibung || extractedData.schaden?.beschreibung || '',
+        zusammenfassung: extractedData.zusammenfassung || extractedData.aenderung?.beschreibung || extractedData.schaden?.beschreibung || '',
         status: 'eingereicht'
       })
       .select()
@@ -304,31 +311,6 @@ function mapContractChangeType(type: string): string {
   };
   
   return typeMapping[type] || 'anpassung'; // Fallback auf 'anpassung' wenn kein Match
-}
-
-// Hilfsfunktion für die Erstellung von Schadensmeldungen
-async function createDamageReport(documentId: string, extractedData: any): Promise<DamageReportData> {
-  const schadendatum = extractedData.aenderung?.datum || extractedData.schaden_datum;
-  if (!schadendatum) {
-    throw new Error('Kein Schadensdatum gefunden');
-  }
-
-  const isoDate = parseDEDate(schadendatum);
-  if (!isoDate) {
-    throw new Error('Ungültiges Datumsformat. Erwartet: DD.MM.YYYY');
-  }
-
-  return {
-    document_id: documentId,
-    versicherungsnummer: extractedData.vertragsnummer || '',
-    name: extractedData.kunde?.name || extractedData.versicherter?.name || '',
-    adresse: `${extractedData.kunde?.adresse || ''}, ${extractedData.kunde?.plz || ''}, ${extractedData.kunde?.ort || ''}`,
-    schaden_datum: isoDate,
-    schaden_ort: extractedData.kunde?.ort || '',
-    schaden_beschreibung: extractedData.aenderung?.beschreibung || extractedData.schaden?.beschreibung || '',
-    zusammenfassung: extractedData.aenderung?.beschreibung || extractedData.schaden?.beschreibung || '',
-    status: 'eingereicht'
-  };
 }
 
 export async function processDocument(params: ProcessDocumentParams): Promise<ProcessDocumentResult> {
