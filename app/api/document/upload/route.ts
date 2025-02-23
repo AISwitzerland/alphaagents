@@ -262,18 +262,23 @@ export async function POST(request: Request) {
 
     // Connect classification to type-specific tables
     if (processResult.documentType && processResult.metadata?.extractedData) {
-      switch(processResult.documentType) {
-        case 'accident_report':
-          await createAccidentReport(dbData.id, processResult.metadata.extractedData);
-          break;
-        case 'damage_report':
-          await createDamageReport(dbData.id, processResult.metadata.extractedData);
-          break;
-        case 'contract_change':
-          await createContractChange(dbData.id, processResult.metadata.extractedData);
-          break;
-        default:
-          await createMiscDocument(dbData.id, processResult.metadata.extractedData);
+      try {
+        switch(processResult.documentType) {
+          case 'accident_report':
+            await createAccidentReport(dbData.id, processResult.metadata.extractedData);
+            break;
+          case 'damage_report':
+            await createDamageReport(dbData.id, processResult.metadata.extractedData);
+            break;
+          case 'contract_change':
+            await createContractChange(dbData.id, processResult.metadata.extractedData);
+            break;
+          default:
+            await createMiscDocument(dbData.id, processResult.metadata.extractedData);
+        }
+      } catch (error) {
+        console.error('Error creating specific document record:', error);
+        // Don't fail the upload if specific document creation fails
       }
     }
 

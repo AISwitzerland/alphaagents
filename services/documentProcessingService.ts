@@ -196,59 +196,97 @@ function parseDEDate(dateStr: string): string | null {
   return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 }
 
-async function createAccidentReport(documentId: string, extractedData: any, accessToken: string) {
-  console.log('Starte createAccidentReport mit:', {
-    documentId,
-    hasExtractedData: !!extractedData,
-    hasToken: !!accessToken
-  });
-
+export async function createAccidentReport(documentId: string, extractedData: any) {
   try {
-    // Konvertiere das Datum in das ISO-Format
-    const unfallDatum = parseDEDate(extractedData.unfall_datum);
-    const geburtsdatum = parseDEDate(extractedData.geburtsdatum);
-
-    if (!unfallDatum || !geburtsdatum) {
-      throw new Error('Ungültiges Datumsformat. Erwartet: DD.MM.YYYY');
-    }
-
-    const supabaseAuth = createClient<Database>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        global: {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        }
-      }
-    );
-
-    const { data: accidentReport, error } = await supabaseAuth
+    const { data: accidentReport, error } = await supabase
       .from('accident_reports')
       .insert({
         document_id: documentId,
-        name: extractedData.name,
-        geburtsdatum: geburtsdatum,
-        ahv_nummer: extractedData.ahv_nummer,
-        unfall_datum: unfallDatum,
-        unfall_zeit: extractedData.unfall_zeit,
-        unfall_ort: extractedData.unfall_ort,
-        unfall_beschreibung: extractedData.unfall_beschreibung,
+        name: extractedData.name || '',
+        geburtsdatum: extractedData.geburtsdatum || null,
+        ahv_nummer: extractedData.ahv_nummer || '',
+        unfall_datum: extractedData.unfall_datum || null,
+        unfall_zeit: extractedData.unfall_zeit || '',
+        unfall_ort: extractedData.unfall_ort || '',
+        unfall_beschreibung: extractedData.unfall_beschreibung || '',
         verletzung_art: extractedData.verletzung_art || '',
-        verletzung_koerperteil: extractedData.verletzung_koerperteil
+        verletzung_koerperteil: extractedData.verletzung_koerperteil || ''
       })
       .select()
       .single();
 
-    if (error) {
-      console.error('Fehler beim Erstellen des Unfallberichts:', error);
-      throw error;
-    }
-
+    if (error) throw error;
     return accidentReport;
   } catch (error) {
-    console.error('Fehler in createAccidentReport:', error);
+    console.error('Error in createAccidentReport:', error);
+    throw error;
+  }
+}
+
+export async function createDamageReport(documentId: string, extractedData: any) {
+  try {
+    const { data: damageReport, error } = await supabase
+      .from('damage_reports')
+      .insert({
+        document_id: documentId,
+        versicherungsnummer: extractedData.versicherungsnummer || '',
+        name: extractedData.name || '',
+        adresse: extractedData.adresse || '',
+        schaden_datum: extractedData.schaden_datum || null,
+        schaden_ort: extractedData.schaden_ort || '',
+        schaden_beschreibung: extractedData.schaden_beschreibung || '',
+        zusammenfassung: extractedData.zusammenfassung || '',
+        status: 'eingereicht'
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return damageReport;
+  } catch (error) {
+    console.error('Error in createDamageReport:', error);
+    throw error;
+  }
+}
+
+export async function createContractChange(documentId: string, extractedData: any) {
+  try {
+    const { data: contractChange, error } = await supabase
+      .from('contract_changes')
+      .insert({
+        document_id: documentId,
+        type: extractedData.type || 'other',
+        description: extractedData.description || '',
+        status: 'pending'
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return contractChange;
+  } catch (error) {
+    console.error('Error in createContractChange:', error);
+    throw error;
+  }
+}
+
+export async function createMiscDocument(documentId: string, extractedData: any) {
+  try {
+    const { data: miscDocument, error } = await supabase
+      .from('misc_documents')
+      .insert({
+        document_id: documentId,
+        title: extractedData.title || 'Untitled',
+        description: extractedData.description || '',
+        status: 'received'
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return miscDocument;
+  } catch (error) {
+    console.error('Error in createMiscDocument:', error);
     throw error;
   }
 }
@@ -295,27 +333,30 @@ async function createDamageReport(documentId: string, extractedData: any): Promi
 
 export async function processDocument(params: ProcessDocumentParams): Promise<ProcessDocumentResult> {
   try {
-    // Hier kommt später die eigentliche Dokumentenverarbeitung
-    // Momentan nur ein Platzhalter für die Integration
-    console.log('Verarbeite Dokument:', {
+    console.log('Processing document:', {
       type: params.fileType,
       size: params.metadata.size,
       source: params.metadata.source
     });
 
-    // Simuliere erfolgreiche Verarbeitung
+    // For now, we'll just store the document without processing
     return {
-      documentType: 'unclassified',
+      documentType: 'misc',
       processId: Date.now().toString(),
       metadata: {
         processed: true,
-        processingTime: new Date().toISOString()
+        processingTime: new Date().toISOString(),
+        extractedData: {
+          title: params.metadata.originalName,
+          description: `Uploaded via ${params.metadata.source}`,
+          uploadedBy: params.metadata.uploadedBy
+        }
       }
     };
   } catch (error) {
-    console.error('Fehler bei der Dokumentenverarbeitung:', error);
+    console.error('Error processing document:', error);
     return {
-      error: error instanceof Error ? error.message : 'Unbekannter Fehler bei der Dokumentenverarbeitung'
+      error: error instanceof Error ? error.message : 'Unknown error processing document'
     };
   }
 }
@@ -396,16 +437,4 @@ function validateDocumentType(type: string, extractionResult: any): DocumentType
   console.log('Alle Scores:', scores);
   
   return documentType;
-}
-
-async function createMiscDocument(documentId: string, extractedData: any): Promise<void> {
-  const db = DatabaseService.getInstance();
-  
-  await db.createMiscDocument({
-    document_id: documentId,
-    title: 'Handschriftliche Notizen',
-    document_date: new Date().toISOString(),
-    summary: 'Handschriftliches Dokument wurde hochgeladen',
-    status: 'eingereicht'
-  });
 } 
