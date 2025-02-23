@@ -1,13 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import { EmailService } from './emailService';
-
-interface AppointmentData {
-  termin_datum: Date;
-  name: string;
-  email: string;
-  telefon: string;
-  notizen?: string;
-}
+import { AppointmentData, AppointmentStatus, AppointmentRecord } from '@/types/appointment';
 
 export class AppointmentService {
   private static instance: AppointmentService;
@@ -24,7 +17,7 @@ export class AppointmentService {
     return AppointmentService.instance;
   }
 
-  async createAppointment(data: AppointmentData) {
+  async createAppointment(data: AppointmentData): Promise<AppointmentRecord> {
     try {
       // Create appointment in database
       const { data: appointment, error } = await supabase
@@ -35,7 +28,7 @@ export class AppointmentService {
           telefon: data.telefon,
           termin_datum: data.termin_datum.toISOString(),
           notizen: data.notizen,
-          status: 'eingereicht'
+          status: 'eingereicht' as AppointmentStatus
         })
         .select()
         .single();
@@ -61,7 +54,7 @@ export class AppointmentService {
     }
   }
 
-  static async checkAvailability(date: Date): Promise<boolean> {
+  async checkAvailability(date: Date): Promise<boolean> {
     // Get appointments for the given date
     const startOfDay = new Date(date);
     startOfDay.setHours(0, 0, 0, 0);
@@ -84,7 +77,7 @@ export class AppointmentService {
     return !existingAppointments || existingAppointments.length < 8;
   }
 
-  static async getAvailableSlots(date: Date): Promise<Date[]> {
+  async getAvailableSlots(date: Date): Promise<Date[]> {
     const { data: existingAppointments, error } = await supabase
       .from('appointments')
       .select('termin_datum')

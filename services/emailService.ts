@@ -3,52 +3,7 @@ import type { CreateEmailResponse } from 'resend';
 import { isErrorWithMessage, ValidationError, isValidEmail } from '../types/utils';
 import { API } from '../types/constants';
 import { supabase } from '@/lib/supabase';
-
-interface EmailMetadata {
-  documentType: string;
-  processId: string;
-  timestamp: string;
-  [key: string]: string | number | boolean;
-}
-
-interface EmailData {
-  documentType: string;
-  metadata: EmailMetadata;
-  extractedText: string;
-  processId: string;
-  recipient?: string;
-}
-
-interface DocumentUploadNotification {
-  documentId: string;
-  fileName: string;
-  uploadedBy: {
-    name?: string;
-    email?: string;
-    phone?: string;
-    source: 'chat' | 'dashboard';
-  };
-  documentType: string;
-  uploadedAt: string;
-}
-
-interface EmailResult {
-  success: boolean;
-  messageId?: string;
-  error?: {
-    code: string;
-    message: string;
-    details?: unknown;
-  };
-}
-
-interface AppointmentEmailData {
-  name: string;
-  email: string;
-  telefon: string;
-  termin_datum: Date;
-  notizen?: string;
-}
+import { EmailData, DocumentUploadNotification, EmailResult, AppointmentEmailData } from '@/types/email';
 
 function getResendClient() {
   if (typeof window !== 'undefined') {

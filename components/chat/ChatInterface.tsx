@@ -12,49 +12,13 @@ import { AppointmentForm } from '@/components/appointments/AppointmentForm';
 import { AppointmentCalendar } from '@/components/appointments/AppointmentCalendar';
 import { AppointmentService } from '@/services/appointmentService';
 import { ChatFlowManager } from '@/services/chatFlowManager';
-
-interface Message {
-  id: string;
-  type: 'user' | 'bot';
-  content: string;
-  timestamp: Date;
-  intent?: string;
-  language?: string;
-  fileUrl?: string;
-  fileName?: string;
-}
-
-interface UserContactData {
-  name?: string;
-  email?: string;
-  phone?: string;
-}
+import { Message, UserContactData, AppointmentStep, DataCollectionStep, DataCollectionState } from '@/types/chat';
 
 interface AppointmentFormData {
   name: string;
   email: string;
   telefon: string;
   notizen?: string;
-}
-
-type AppointmentStep = 
-  | 'form'
-  | 'calendar'
-  | 'confirmation';
-
-type DataCollectionStep = 
-  | 'idle'
-  | 'collecting_name'
-  | 'collecting_email'
-  | 'collecting_phone'
-  | 'confirming_data'
-  | 'ready_for_upload';
-
-interface DataCollectionState {
-  step: DataCollectionStep;
-  data: UserContactData;
-  confirmed: boolean;
-  retries: number;
 }
 
 const WELCOME_MESSAGE: Message = {

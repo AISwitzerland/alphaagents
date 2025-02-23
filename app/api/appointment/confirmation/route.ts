@@ -1,12 +1,30 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { AppointmentData } from '@/types/appointment';
+import { isValidEmail } from '@/types/utils';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
-    const data = await request.json();
+    const data = await request.json() as AppointmentData;
     const { name, email, telefon, termin_datum, notizen } = data;
+
+    // Validate required fields
+    if (!name || !email || !telefon || !termin_datum) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+
+    // Validate email format
+    if (!isValidEmail(email)) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
+        { status: 400 }
+      );
+    }
 
     const date = new Date(termin_datum);
 
@@ -38,7 +56,10 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Failed to send confirmation email:', error);
     return NextResponse.json(
-      { error: 'Failed to send confirmation email' },
+      { 
+        error: 'Failed to send confirmation email',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
