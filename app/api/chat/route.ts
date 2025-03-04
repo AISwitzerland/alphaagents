@@ -3,9 +3,12 @@ import OpenAI from 'openai';
 import { CHAT_CONFIG } from '@/services/chatConfig';
 import { ChatCompletionMessageParam, ChatCompletionSystemMessageParam, ChatCompletionUserMessageParam, ChatCompletionAssistantMessageParam } from 'openai/resources/chat';
 
+// Verwende den API Key aus der Umgebungsvariable mit Fallback
+const apiKey = process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+
 // Initialize OpenAI client
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: apiKey,
 });
 
 // Rate limiting map (in a production environment, use Redis or similar)

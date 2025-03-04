@@ -3,9 +3,14 @@ import { Database } from '@/types/database';
 import { DocumentType } from '@/types/document';
 import OpenAI from 'openai';
 import type { ChatCompletionMessageParam } from 'openai/resources/chat/completions';
+import { Document } from '@/types';
 
+// Verwende den API Key aus der Umgebungsvariable mit Fallback
+const apiKey = process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+
+// Initialize OpenAI client
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: apiKey,
 });
 
 const supabase = createClient<Database>(

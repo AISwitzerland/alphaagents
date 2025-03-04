@@ -6,12 +6,15 @@ class GPTVisionProcessor {
   private openai: OpenAI;
 
   constructor() {
-    if (!process.env.OPENAI_API_KEY) {
-      throw new Error('OPENAI_API_KEY ist nicht konfiguriert');
+    // Verwende den API Key aus der Umgebungsvariable mit Fallback
+    const apiKey = process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+
+    if (!apiKey) {
+      throw new Error('Kein OpenAI API Key gefunden. Stelle sicher, dass entweder OPENAI_API_KEY oder NEXT_PUBLIC_OPENAI_API_KEY konfiguriert ist.');
     }
 
     this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
+      apiKey: apiKey,
     });
   }
 

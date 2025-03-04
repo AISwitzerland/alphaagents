@@ -4,9 +4,12 @@ import { fileToBase64 } from '@/services/documentProcessingService';
 import OpenAI from 'openai';
 import { isPdf, convertBase64PdfToBase64Image } from '@/services/pdfService';
 
-// OpenAI Client für die Vision API
+// Verwende den API Key aus der Umgebungsvariable mit Fallback
+const apiKey = process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+
+// Initialize OpenAI client
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: apiKey,
 });
 
 /**
