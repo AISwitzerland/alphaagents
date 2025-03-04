@@ -40,6 +40,16 @@ export const useDocumentStore = create<DocumentState>()(
             
           if (error) throw error;
           
+          // Sicherheitsmaßnahme: Wenn data null oder undefined ist, setze ein leeres Array
+          if (!data) {
+            set({ 
+              documents: [], 
+              isLoading: false,
+              lastSynced: new Date()
+            });
+            return;
+          }
+          
           // Daten transformieren in unser Document-Format
           const formattedDocuments: Document[] = data.map(item => ({
             id: item.id,
@@ -61,7 +71,7 @@ export const useDocumentStore = create<DocumentState>()(
           });
         } catch (err: any) {
           console.error('Fehler beim Laden der Dokumente:', err.message);
-          set({ isLoading: false, error: err.message });
+          set({ isLoading: false, error: err.message, documents: [] }); // Stelle sicher, dass documents immer ein Array ist
         }
       },
       
