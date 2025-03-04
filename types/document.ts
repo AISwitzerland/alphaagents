@@ -13,6 +13,7 @@ export interface DocumentMetadata {
     name: string;
     email: string;
     phone?: string;
+    id?: string;
   };
   uploadedAt: string;
   source: 'email' | 'chat';

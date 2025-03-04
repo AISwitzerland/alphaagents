@@ -1,7 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { BiSearch, BiFilterAlt, BiCheckCircle, BiX, BiDotsHorizontalRounded } from 'react-icons/bi';
+import { useDocumentStore } from '@/store/documentStore';
+import { Document as DocumentType } from '@/types/document';
 
 // Mock-Daten für Dokumente
 const documents = [
@@ -73,19 +76,106 @@ const typeFilters = ['Alle', 'Schadenmeldung', 'Rechnung', 'Vertragsänderung', 
 
 export default function DocumentsPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('Alle');
-  const [typeFilter, setTypeFilter] = useState('Alle');
+  const [statusFilter, setStatusFilter] = useState<string | null>(null);
+  const [typeFilter, setTypeFilter] = useState<string | null>(null);
   const [selectedDocument, setSelectedDocument] = useState<string | null>(null);
   
-  // Filtere Dokumente basierend auf Suchbegriff und Filtern
-  const filteredDocuments = documents.filter(doc => {
-    const matchesSearch = doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         doc.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesStatus = statusFilter === 'Alle' || doc.status === statusFilter;
-    const matchesType = typeFilter === 'Alle' || doc.type === typeFilter;
+  // Dokument-Store verwenden
+  const { 
+    documents: storeDocuments, 
+    isLoading, 
+    error, 
+    fetchDocuments,
+    lastSynced
+  } = useDocumentStore();
+  
+  // Beim ersten Laden und dann alle 30 Sekunden Dokumente abrufen
+  useEffect(() => {
+    // Sofort laden
+    fetchDocuments();
     
-    return matchesSearch && matchesStatus && matchesType;
+    // Alle 30 Sekunden aktualisieren
+    const interval = setInterval(() => {
+      fetchDocuments();
+    }, 30000);
+    
+    return () => clearInterval(interval);
+  }, [fetchDocuments]);
+  
+  // Gefilterte Dokumente basierend auf den ausgewählten Filtern
+  const filteredDocuments = storeDocuments.filter(doc => {
+    // Statusfilter
+    if (statusFilter && doc.status.status !== statusFilter) {
+      return false;
+    }
+    
+    // Typfilter
+    if (typeFilter && doc.type !== typeFilter) {
+      return false;
+    }
+    
+    // Suchbegriff
+    if (searchTerm) {
+      const searchTermLower = searchTerm.toLowerCase();
+      return (
+        doc.metadata.originalName.toLowerCase().includes(searchTermLower) ||
+        doc.id.toLowerCase().includes(searchTermLower) ||
+        doc.type.toLowerCase().includes(searchTermLower)
+      );
+    }
+    
+    return true;
   });
+  
+  // Formatiere das Datum
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { 
+      year: 'numeric', 
+      month: '2-digit', 
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    };
+    return new Date(dateString).toLocaleDateString('de-DE', options);
+  };
+  
+  // Statusbadge-Komponente
+  const StatusBadge = ({ status }: { status: string }) => {
+    let bgColor = '';
+    let textColor = '';
+    
+    switch (status) {
+      case 'eingereicht':
+        bgColor = 'bg-blue-100';
+        textColor = 'text-blue-600';
+        break;
+      case 'in_bearbeitung':
+        bgColor = 'bg-yellow-100';
+        textColor = 'text-yellow-600';
+        break;
+      case 'abgeschlossen':
+        bgColor = 'bg-green-100';
+        textColor = 'text-green-600';
+        break;
+      case 'archiviert':
+        bgColor = 'bg-gray-100';
+        textColor = 'text-gray-600';
+        break;
+      case 'storniert':
+        bgColor = 'bg-red-100';
+        textColor = 'text-red-600';
+        break;
+      default:
+        bgColor = 'bg-gray-100';
+        textColor = 'text-gray-600';
+    }
+    
+    return (
+      <span className={`px-2 py-1 rounded-full text-xs font-medium ${bgColor} ${textColor}`}>
+        {status}
+      </span>
+    );
+  };
 
   return (
     <div className="space-y-8 pb-8">
@@ -271,16 +361,10 @@ export default function DocumentsPage() {
                       <div className="text-sm text-gray-900">{doc.type}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2.5 py-0.5 inline-flex text-xs leading-5 font-medium rounded-full
-                        ${doc.status === 'Verarbeitet' ? 'bg-green-100 text-green-800' : 
-                          doc.status === 'In Bearbeitung' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-gray-100 text-gray-800'}`}
-                      >
-                        {doc.status}
-                      </span>
+                      <StatusBadge status={doc.status.status} />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {doc.uploaded}
+                      {formatDate(doc.uploaded)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex flex-wrap gap-1">

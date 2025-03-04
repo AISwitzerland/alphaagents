@@ -5,6 +5,10 @@ import { motion } from 'framer-motion';
 import { useDropzone } from 'react-dropzone';
 import { DocumentService } from '@/services/documentService';
 import { supabase } from '@/services/supabaseClient';
+import { useDocumentStore } from '@/store/documentStore';
+import { v4 as uuidv4 } from 'uuid';
+import { DocumentType } from '@/types/document';
+import { DocumentStatus } from '@/types';
 
 export default function UploadPage() {
   const [files, setFiles] = useState<Array<File & { preview?: string }>>([]);
@@ -13,6 +17,9 @@ export default function UploadPage() {
   const [uploadStatus, setUploadStatus] = useState<{ [key: string]: 'idle' | 'uploading' | 'success' | 'error' }>({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  
+  // Document Store verwenden
+  const { addDocument } = useDocumentStore();
   
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // Fügt Vorschau-URLs zu Dateien hinzu
@@ -198,11 +205,41 @@ export default function UploadPage() {
         if (result.success) {
           setUploadProgress(prev => ({ ...prev, [file.name]: 100 }));
           setUploadStatus(prev => ({ ...prev, [file.name]: 'success' }));
-          console.log('Upload erfolgreich:', result);
+          
+          // Erstelle ein Document-Objekt für den lokalen Store
+          if (result.processId) {
+            const docId = result.documentId || uuidv4(); // Fallback, wenn keine ID zurückgegeben wird
+            
+            // Erstelle Dokument für lokalen Store
+            const documentForStore = {
+              id: docId,
+              type: 'misc' as DocumentType, // Explizites Type-Casting zu DocumentType
+              status: {
+                status: 'eingereicht' as DocumentStatus, // Korrekter Typ für Status
+                progress: 100,
+                message: 'Dokument wurde hochgeladen'
+              },
+              metadata: {
+                originalName: file.name,
+                size: file.size,
+                mimeType: file.type,
+                uploadedBy: userData,
+                uploadedAt: new Date().toISOString(),
+                source: 'chat' as const // Literal-Typ
+              },
+              filePath: result.path || '',
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString()
+            };
+            
+            // Füge das Dokument zum lokalen Store hinzu
+            await addDocument(documentForStore);
+            
+            console.log('Dokument wurde zum lokalen Store hinzugefügt:', docId);
+          }
         } else {
           setUploadStatus(prev => ({ ...prev, [file.name]: 'error' }));
           console.error('Upload fehlgeschlagen:', result.error);
-          // UI-Feedback für Fehler anzeigen
         }
         
         return {
@@ -211,7 +248,7 @@ export default function UploadPage() {
           processId: result.processId
         };
       } catch (error) {
-        console.error('Fehler beim Upload von', file.name, error);
+        console.error('Fehler beim Upload von', file.name, ':', error);
         setUploadStatus(prev => ({ ...prev, [file.name]: 'error' }));
         
         return {
