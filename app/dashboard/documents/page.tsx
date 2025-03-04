@@ -103,7 +103,7 @@ export default function DocumentsPage() {
   }, [fetchDocuments]);
   
   // Gefilterte Dokumente basierend auf den ausgewählten Filtern
-  const filteredDocuments = storeDocuments?.filter(doc => {
+  const filteredDocuments = (storeDocuments || [])?.filter(doc => {
     // Null-Check für die Dokumente
     if (!doc) return false;
     
@@ -279,7 +279,7 @@ export default function DocumentsPage() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-100">
-                  {filteredDocuments.map((doc, index) => (
+                  {Array.isArray(filteredDocuments) && filteredDocuments.map((doc, index) => (
                     <motion.tr 
                       key={doc.id}
                       initial={{ opacity: 0, y: 10 }}
@@ -292,38 +292,38 @@ export default function DocumentsPage() {
                         <div className="flex items-center">
                           <div className={`
                             flex-shrink-0 h-10 w-10 rounded-lg flex items-center justify-center
-                            ${doc.type === 'Schadenmeldung' ? 'bg-red-100' : 
-                              doc.type === 'Rechnung' ? 'bg-yellow-100' : 
-                              doc.type === 'Vertragsänderung' ? 'bg-blue-100' :
-                              doc.type === 'Kundendaten' ? 'bg-green-100' :
-                              doc.type === 'Präsentation' ? 'bg-purple-100' : 'bg-gray-100'}
+                            ${doc.type === 'damage_report' ? 'bg-red-100' : 
+                              doc.type === 'invoice' ? 'bg-yellow-100' : 
+                              doc.type === 'contract_change' ? 'bg-blue-100' :
+                              doc.type === 'accident_report' ? 'bg-green-100' :
+                              doc.type === 'misc' ? 'bg-purple-100' : 'bg-gray-100'}
                           `}>
                             <svg className={`h-6 w-6 
-                              ${doc.type === 'Schadenmeldung' ? 'text-red-500' : 
-                                doc.type === 'Rechnung' ? 'text-yellow-600' : 
-                                doc.type === 'Vertragsänderung' ? 'text-blue-500' :
-                                doc.type === 'Kundendaten' ? 'text-green-500' :
-                                doc.type === 'Präsentation' ? 'text-purple-500' : 'text-gray-500'}`} 
+                              ${doc.type === 'damage_report' ? 'text-red-500' : 
+                                doc.type === 'invoice' ? 'text-yellow-600' : 
+                                doc.type === 'contract_change' ? 'text-blue-500' :
+                                doc.type === 'accident_report' ? 'text-green-500' :
+                                doc.type === 'misc' ? 'text-purple-500' : 'text-gray-500'}`} 
                               fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             >
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} 
-                                d={doc.type === 'Schadenmeldung' 
+                                d={doc.type === 'damage_report' 
                                   ? "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" 
-                                  : doc.type === 'Rechnung' 
+                                  : doc.type === 'invoice' 
                                     ? "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" 
-                                    : doc.type === 'Vertragsänderung'
+                                    : doc.type === 'contract_change'
                                       ? "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                      : doc.type === 'Kundendaten'
+                                      : doc.type === 'accident_report'
                                         ? "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                        : doc.type === 'Präsentation'
+                                        : doc.type === 'misc'
                                           ? "M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
                                           : "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"} 
                               />
                             </svg>
                           </div>
                           <div className="ml-4">
-                            <div className="text-sm font-medium text-primary-600">{doc.name}</div>
-                            <div className="text-xs text-gray-500">{doc.size}</div>
+                            <div className="text-sm font-medium text-primary-600">{doc.metadata?.originalName || doc.id}</div>
+                            <div className="text-xs text-gray-500">{doc.metadata?.size ? `${Math.round(doc.metadata.size / 1024)} KB` : 'Unbekannte Größe'}</div>
                           </div>
                         </div>
                       </td>
@@ -334,18 +334,22 @@ export default function DocumentsPage() {
                         <StatusBadge status={doc.status.status} />
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {formatDate(doc.uploaded)}
+                        {doc.metadata?.uploadedAt ? formatDate(doc.metadata.uploadedAt) : formatDate(doc.createdAt)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex flex-wrap gap-1">
-                          {doc.tags.map((tag, tagIndex) => (
-                            <span 
-                              key={tagIndex} 
-                              className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary-100 text-primary-800"
-                            >
-                              {tag}
-                            </span>
-                          ))}
+                          {doc.metadata?.extractedData?.tags && Array.isArray(doc.metadata.extractedData.tags) ? 
+                            doc.metadata.extractedData.tags.map((tag: string, tagIndex: number) => (
+                              <span 
+                                key={tagIndex} 
+                                className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary-100 text-primary-800"
+                              >
+                                {tag}
+                              </span>
+                            )) : (
+                              <span className="text-xs text-gray-400">Keine Tags</span>
+                            )
+                          }
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -398,7 +402,7 @@ export default function DocumentsPage() {
         </motion.div>
 
         {/* Paginierung */}
-        {filteredDocuments.length > 0 && (
+        {Array.isArray(filteredDocuments) && filteredDocuments.length > 0 && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
