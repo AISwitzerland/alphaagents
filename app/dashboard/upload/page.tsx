@@ -1,15 +1,18 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useDropzone } from 'react-dropzone';
 import { DocumentService } from '@/services/documentService';
+import { supabase } from '@/services/supabaseClient';
 
 export default function UploadPage() {
   const [files, setFiles] = useState<Array<File & { preview?: string }>>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
   const [uploadStatus, setUploadStatus] = useState<{ [key: string]: 'idle' | 'uploading' | 'success' | 'error' }>({});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // Fügt Vorschau-URLs zu Dateien hinzu
@@ -67,8 +70,80 @@ export default function UploadPage() {
     setUploadProgress(newUploadProgress);
   };
   
+  // Supabase Auth Status überprüfen
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (error) {
+        console.error('Fehler beim Abrufen der Session:', error);
+        return;
+      }
+      
+      if (session) {
+        setIsAuthenticated(true);
+        setUserId(session.user.id);
+        console.log('Benutzer angemeldet:', session.user.email);
+        console.log('Benutzer-ID:', session.user.id);
+      } else {
+        // Versuche Auto-Login falls keine Session
+        try {
+          const { data, error: loginError } = await supabase.auth.signInWithPassword({
+            email: 'aiagent.test.demo@gmail.com',
+            password: 'Test123',
+          });
+          
+          if (loginError) {
+            console.error('Auto-Login fehlgeschlagen:', loginError);
+            return;
+          }
+          
+          if (data.session) {
+            setIsAuthenticated(true);
+            setUserId(data.session.user.id);
+            console.log('Auto-Login erfolgreich:', data.session.user.email);
+            console.log('Benutzer-ID:', data.session.user.id);
+          }
+        } catch (e) {
+          console.error('Unerwarteter Fehler beim Login:', e);
+        }
+      }
+    };
+    
+    checkAuth();
+  }, []);
+  
   const uploadFiles = async () => {
     if (files.length === 0) return;
+    
+    // Überprüfen, ob wir authentifiziert sind
+    if (!isAuthenticated) {
+      console.error('Benutzer ist nicht authentifiziert, versuche erneut anzumelden');
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: 'aiagent.test.demo@gmail.com',
+          password: 'Test123',
+        });
+        
+        if (error) {
+          console.error('Login fehlgeschlagen:', error);
+          alert('Upload fehlgeschlagen: Anmeldung nicht möglich.');
+          return;
+        }
+        
+        if (data.session) {
+          setIsAuthenticated(true);
+          setUserId(data.session.user.id);
+        } else {
+          alert('Upload fehlgeschlagen: Keine Session nach Anmeldung.');
+          return;
+        }
+      } catch (e) {
+        console.error('Unerwarteter Fehler beim Login:', e);
+        alert('Upload fehlgeschlagen: Anmeldefehler.');
+        return;
+      }
+    }
     
     setUploading(true);
     
@@ -81,12 +156,14 @@ export default function UploadPage() {
         setUploadStatus(prev => ({ ...prev, [file.name]: 'uploading' }));
         setUploadProgress(prev => ({ ...prev, [file.name]: 10 }));
         
-        // Mock-Benutzer für Testzwecke mit UUID
+        // Echter Benutzer mit ID aus der Authentifizierung
         const userData = {
           name: 'Test Benutzer',
-          email: 'test@example.com',
-          id: '550e8400-e29b-41d4-a716-446655440000' // Statische UUID für Testzwecke
+          email: 'aiagent.test.demo@gmail.com',
+          id: userId || '550e8400-e29b-41d4-a716-446655440000' // Verwende die echte ID wenn verfügbar
         };
+        
+        console.log('Upload mit Benutzer-ID:', userData.id);
         
         // Start des Uploads mit Updates für den Fortschritt
         const simulateProgress = () => {
