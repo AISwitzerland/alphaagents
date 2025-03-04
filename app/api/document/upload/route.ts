@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { createServerSupabaseClient } from '@/services/supabaseServerClient';
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from '@/types/constants';
 import { Database } from '@/types/database';
 import { processDocument, createAccidentReport, createDamageReport, createContractChange, createMiscDocument } from '@/services/documentProcessingService';
@@ -71,57 +70,26 @@ export async function POST(request: Request) {
       );
     }
 
-    // Initialisiere Supabase-Client
+    // Initialisiere Supabase-Client mit unserem Server-Client
     console.log('Initialisiere Supabase-Client...');
-    const cookieStore = cookies();
-    
-    const supabase = createServerClient<Database>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value;
-          },
-          set(name: string, value: string, options: any) {
-            try {
-              cookieStore.set(name, value, options);
-            } catch (error) {
-              console.error('Error setting cookie:', error);
-            }
-          },
-          remove(name: string, options: any) {
-            try {
-              cookieStore.set(name, '', { ...options, maxAge: 0 });
-            } catch (error) {
-              console.error('Error removing cookie:', error);
-            }
-          },
-        },
-        ...(authHeader ? {
-          global: {
-            headers: {
-              Authorization: authHeader
-            }
-          }
-        } : {})
-      }
-    );
+    const supabase = createServerSupabaseClient();
 
-    // Get the existing session
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-    console.log('Session found:', !!session);
+    // Get authenticated user (sicherer als getSession)
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    console.log('Authenticated user found:', !!userData.user);
 
-    if (sessionError) {
-      console.error('Session error:', sessionError);
+    if (userError) {
+      console.error('User authentication error:', userError);
       return NextResponse.json(
         { error: 'Authentifizierungsfehler' },
         { status: 401 }
       );
     }
 
-    // For chat uploads, authenticate as the chat service account if no session exists
-    if (!session && source === 'chat') {
+    let uploadUser: User | null = userData.user;
+
+    // For chat uploads, authenticate as the chat service account if no user exists
+    if (!uploadUser && source === 'chat') {
       console.log('Authenticating as chat service account...');
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email: 'aiagent.test.demo@gmail.com',
@@ -136,19 +104,15 @@ export async function POST(request: Request) {
         );
       }
 
+      uploadUser = authData.user;
       console.log('Successfully authenticated as chat service account');
-    } else if (!session && source !== 'chat') {
-      console.error('No session found and not a chat upload');
+    } else if (!uploadUser && source !== 'chat') {
+      console.error('No authenticated user found and not a chat upload');
       return NextResponse.json(
         { error: 'Nicht authentifiziert' },
         { status: 401 }
       );
     }
-
-    const uploadUser = session?.user || {
-      id: source === 'chat' ? CHAT_SERVICE_ACCOUNT_ID : 'unknown',
-      email: contactInfo?.email || 'chat@example.com'
-    };
 
     // Generiere eindeutigen Dateipfad
     const timestamp = Date.now();
@@ -157,7 +121,7 @@ export async function POST(request: Request) {
       .replace(/[\u0300-\u036f]/g, '')
       .replace(/[^a-zA-Z0-9.-]/g, '_')
       .replace(/_{2,}/g, '_');
-    const filePath = `${uploadUser.id}/${timestamp}-${sanitizedFileName}`;
+    const filePath = `${uploadUser?.id || CHAT_SERVICE_ACCOUNT_ID}/${timestamp}-${sanitizedFileName}`;
 
     // Upload zur Supabase Storage
     const { data: uploadData, error: uploadError } = await supabase.storage
@@ -194,14 +158,14 @@ export async function POST(request: Request) {
             phone: contactInfo?.phone,
             source: 'chat'
           } : {
-            id: uploadUser.id,
-            email: uploadUser.email,
+            id: uploadUser?.id || CHAT_SERVICE_ACCOUNT_ID,
+            email: uploadUser?.email || 'chat@example.com',
             source: 'dashboard'
           },
           uploadedAt: new Date().toISOString(),
           source: source
         },
-        uploaded_by: uploadUser.id
+        uploaded_by: uploadUser?.id || CHAT_SERVICE_ACCOUNT_ID
       })
       .select()
       .single();
@@ -218,6 +182,7 @@ export async function POST(request: Request) {
     const arrayBuffer = await file.arrayBuffer();
     const base64 = Buffer.from(arrayBuffer).toString('base64');
 
+    console.log('Starte Dokumentverarbeitung...');
     const processResult = await processDocument({
       fileContent: base64,
       fileType: file.type,
@@ -232,8 +197,8 @@ export async function POST(request: Request) {
           phone: contactInfo?.phone,
           source: 'chat'
         } : {
-          id: uploadUser.id,
-          email: uploadUser.email,
+          id: uploadUser?.id || CHAT_SERVICE_ACCOUNT_ID,
+          email: uploadUser?.email || 'chat@example.com',
           source: 'dashboard'
         },
         uploadedAt: new Date().toISOString(),
@@ -255,44 +220,71 @@ export async function POST(request: Request) {
         .eq('id', dbData.id);
 
       return NextResponse.json(
-        { error: 'Fehler bei der Dokumentenverarbeitung' },
+        { 
+          error: 'Fehler bei der Dokumentenverarbeitung', 
+          details: processResult.error 
+        },
         { status: 500 }
       );
     }
 
-    // Connect classification to type-specific tables
-    if (processResult.documentType && processResult.metadata?.extractedData) {
-      try {
-        switch(processResult.documentType) {
-          case 'accident_report':
-            await createAccidentReport(dbData.id, processResult.metadata.extractedData);
-            break;
-          case 'damage_report':
-            await createDamageReport(dbData.id, processResult.metadata.extractedData);
-            break;
-          case 'contract_change':
-            await createContractChange(dbData.id, processResult.metadata.extractedData);
-            break;
-          default:
-            await createMiscDocument(dbData.id, processResult.metadata.extractedData);
+    // Aktualisiere den Dokumenttyp und Status
+    console.log('Dokumentverarbeitung erfolgreich, aktualisiere Dokumenttyp:', processResult.documentType);
+    await supabase
+      .from('documents')
+      .update({
+        document_type: processResult.documentType,
+        status: 'verarbeitet',
+        metadata: {
+          ...dbData.metadata,
+          ...processResult.metadata
         }
-      } catch (error) {
-        console.error('Error creating specific document record:', error);
-        // Don't fail the upload if specific document creation fails
+      })
+      .eq('id', dbData.id);
+
+    // Erstelle spezifischen Dokumenteintrag basierend auf dem Dokumenttyp
+    try {
+      console.log('Erstelle spezifischen Dokumenteintrag für Typ:', processResult.documentType);
+      let specificDocumentResult;
+      
+      // Extrahiere die Daten aus dem Verarbeitungsergebnis
+      const extractedData = processResult.metadata?.extractedData || {};
+      
+      // Wähle die entsprechende Funktion basierend auf dem Dokumenttyp
+      switch (processResult.documentType) {
+        case 'unfall':
+          specificDocumentResult = await createAccidentReport(dbData.id, extractedData);
+          break;
+        case 'schaden':
+          specificDocumentResult = await createDamageReport(dbData.id, extractedData);
+          break;
+        case 'vertragsänderung':
+          specificDocumentResult = await createContractChange(dbData.id, extractedData);
+          break;
+        case 'misc':
+        default:
+          specificDocumentResult = await createMiscDocument(dbData.id, extractedData);
+          break;
       }
+      
+      console.log('Spezifischer Dokumenteintrag erfolgreich erstellt:', specificDocumentResult);
+    } catch (error) {
+      console.error('Error creating specific document record:', error);
+      // Wir geben hier keinen Fehler zurück, da der Upload selbst erfolgreich war
+      // Aber wir loggen den Fehler für Debugging-Zwecke
     }
 
-    // Erfolgreiche Verarbeitung
+    // Erfolgreiche Antwort
     return NextResponse.json({
       success: true,
       documentId: dbData.id,
-      message: 'Dokument erfolgreich hochgeladen und wird verarbeitet'
+      documentType: processResult.documentType
     });
 
   } catch (error) {
-    console.error('Unerwarteter Fehler:', error);
+    console.error('Unbehandelter Fehler:', error);
     return NextResponse.json(
-      { error: 'Ein unerwarteter Fehler ist aufgetreten' },
+      { error: 'Interner Serverfehler', details: error instanceof Error ? error.message : 'Unbekannter Fehler' },
       { status: 500 }
     );
   }

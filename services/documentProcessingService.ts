@@ -69,28 +69,59 @@ function parseDEDate(dateStr: string): string | null {
 }
 
 export async function createAccidentReport(documentId: string, extractedData: any) {
+  console.log('createAccidentReport aufgerufen mit:', { documentId, extractedDataKeys: Object.keys(extractedData) });
+  
   try {
+    // Überprüfe, ob documentId vorhanden ist
+    if (!documentId) {
+      const error = new Error('Keine document_id angegeben');
+      console.error('Error in createAccidentReport: Keine document_id', error);
+      throw error;
+    }
+    
+    // Bereite Daten für die Einfügung vor
+    const dataToInsert = {
+      document_id: documentId,
+      name: extractedData.name || 'Unbekannt',
+      geburtsdatum: extractedData.geburtsdatum || null,
+      ahv_nummer: extractedData.ahv_nummer || '',
+      unfall_datum: extractedData.unfall_datum || null,
+      unfall_zeit: extractedData.unfall_zeit || '',
+      unfall_ort: extractedData.unfall_ort || '',
+      unfall_beschreibung: extractedData.unfall_beschreibung || '',
+      verletzung_art: extractedData.verletzung_art || '',
+      verletzung_koerperteil: extractedData.verletzung_koerperteil || ''
+    };
+    
+    console.log('Füge accident_report ein:', dataToInsert);
+    
+    // Führe die Datenbankeinfügung durch
     const { data: accidentReport, error } = await supabase
       .from('accident_reports')
-      .insert({
-        document_id: documentId,
-        name: extractedData.name || '',
-        geburtsdatum: extractedData.geburtsdatum || null,
-        ahv_nummer: extractedData.ahv_nummer || '',
-        unfall_datum: extractedData.unfall_datum || null,
-        unfall_zeit: extractedData.unfall_zeit || '',
-        unfall_ort: extractedData.unfall_ort || '',
-        unfall_beschreibung: extractedData.unfall_beschreibung || '',
-        verletzung_art: extractedData.verletzung_art || '',
-        verletzung_koerperteil: extractedData.verletzung_koerperteil || ''
-      })
+      .insert(dataToInsert)
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase Fehler in createAccidentReport:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint
+      });
+      throw error;
+    }
+    
+    console.log('accident_report erfolgreich erstellt:', accidentReport);
     return accidentReport;
   } catch (error) {
     console.error('Error in createAccidentReport:', error);
+    // Detailliertes Logging des Fehlers
+    if (error instanceof Error) {
+      console.error(`Fehlertyp: ${error.name}, Nachricht: ${error.message}, Stack: ${error.stack}`);
+    } else {
+      console.error('Unbekannter Fehlertyp:', error);
+    }
     throw error;
   }
 }
@@ -150,22 +181,53 @@ export async function createContractChange(documentId: string, extractedData: an
 }
 
 export async function createMiscDocument(documentId: string, extractedData: any) {
+  console.log('createMiscDocument aufgerufen mit:', { documentId, extractedDataKeys: Object.keys(extractedData) });
+  
   try {
+    // Überprüfe, ob documentId vorhanden ist
+    if (!documentId) {
+      const error = new Error('Keine document_id angegeben');
+      console.error('Error in createMiscDocument: Keine document_id', error);
+      throw error;
+    }
+    
+    // Bereite Daten für die Einfügung vor
+    const dataToInsert = {
+      document_id: documentId,
+      title: extractedData.title || 'Untitled',
+      description: extractedData.description || '',
+      status: 'received'
+    };
+    
+    console.log('Füge misc_document ein:', dataToInsert);
+    
+    // Führe die Datenbankeinfügung durch
     const { data: miscDocument, error } = await supabase
       .from('misc_documents')
-      .insert({
-        document_id: documentId,
-        title: extractedData.title || 'Untitled',
-        description: extractedData.description || '',
-        status: 'received'
-      })
+      .insert(dataToInsert)
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase Fehler in createMiscDocument:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint
+      });
+      throw error;
+    }
+    
+    console.log('misc_document erfolgreich erstellt:', miscDocument);
     return miscDocument;
   } catch (error) {
     console.error('Error in createMiscDocument:', error);
+    // Detailliertes Logging des Fehlers
+    if (error instanceof Error) {
+      console.error(`Fehlertyp: ${error.name}, Nachricht: ${error.message}, Stack: ${error.stack}`);
+    } else {
+      console.error('Unbekannter Fehlertyp:', error);
+    }
     throw error;
   }
 }
@@ -190,25 +252,141 @@ export async function processDocument(params: ProcessDocumentParams): Promise<Pr
     console.log('Processing document:', {
       type: params.fileType,
       size: params.metadata.size,
-      source: params.metadata.source
+      source: params.metadata.source,
+      documentId: params.metadata.documentId
     });
 
-    // For now, we'll just store the document without processing
+    // Dokument für die KI-Erkennung in Base64 konvertieren
+    // Hier nutzen wir die bestehende fileContent, die sollte bereits als Base64 vorliegen
+    const base64Content = params.fileContent;
+    
+    // Original-Dateiname für die Erkennung und Logging
+    const fileName = params.metadata.originalName;
+    
+    // Erweiterte Dokumenttyperkennung mit KI-Unterstützung
+    let documentType = 'misc';
+    let typeSource = 'filename';
+    let confidence = 0.5;
+    
+    try {
+      // Für die KI-basierte Erkennung erstellen wir ein virtuelles File-Objekt
+      const virtualFile = new Blob([Buffer.from(base64Content, 'base64')], { type: params.fileType });
+      Object.defineProperty(virtualFile, 'name', { value: fileName });
+      
+      // Importiere die enhancedDocumentTypeDetection aus utils/file.ts
+      const { enhancedDocumentTypeDetection } = await import('@/utils/file');
+      
+      // Führe die erweiterte Dokumenttyperkennung durch
+      const detectionResult = await enhancedDocumentTypeDetection(virtualFile, base64Content);
+      
+      documentType = detectionResult.documentType;
+      typeSource = detectionResult.source;
+      confidence = detectionResult.confidence;
+      
+      console.log('Erweiterte Dokumenttyperkennung abgeschlossen:', {
+        type: documentType,
+        source: typeSource,
+        confidence: confidence.toFixed(2)
+      });
+    } catch (error) {
+      console.error('Fehler bei der erweiterten Dokumenttyperkennung:', error);
+      
+      // Fallback zur einfachen dateinamenbasierten Erkennung
+      console.log('Verwende Fallback zur dateinamenbasierten Erkennung...');
+      
+      // Einfache Dokumenttyp-Erkennung basierend auf Dateinamen
+      if (fileName.toLowerCase().includes('unfall') || fileName.toLowerCase().includes('accident')) {
+        documentType = 'unfall';
+      } else if (fileName.toLowerCase().includes('schaden') || fileName.toLowerCase().includes('damage')) {
+        documentType = 'schaden';
+      } else if (fileName.toLowerCase().includes('vertrag') || fileName.toLowerCase().includes('contract')) {
+        documentType = 'vertragsänderung';
+      }
+      
+      console.log(`Dokument fallback-klassifiziert als "${documentType}" (dateinamenbasiert)`);
+    }
+    
+    // Erstelle eine Prozess-ID für die Nachverfolgung
+    const processId = `proc_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+    
+    // Bereite Metadaten und extrahierte Daten vor
+    // Diese würden normalerweise aus der KI-Verarbeitung kommen
+    const extractedData = {
+      title: params.metadata.originalName,
+      description: `Uploaded via ${params.metadata.source}`,
+      uploadedBy: params.metadata.uploadedBy,
+      // Füge weitere Felder je nach Dokumenttyp hinzu
+      ...(documentType === 'unfall' && {
+        name: "Test Person",
+        geburtsdatum: "1990-01-01",
+        ahv_nummer: "756.1234.5678.90",
+        unfall_datum: new Date().toISOString().split('T')[0],
+        unfall_zeit: "12:00:00",
+        unfall_ort: "Teststraße 1",
+        unfall_beschreibung: "Testbeschreibung",
+        verletzung_art: "Testbeschreibung",
+        verletzung_koerperteil: "Hand"
+      }),
+      ...(documentType === 'schaden' && {
+        versicherungsnummer: "123456789",
+        name: "Test Person",
+        adresse: "Teststraße 1, 8000 Zürich",
+        schaden_datum: new Date().toISOString().split('T')[0],
+        schaden_ort: "Teststraße 1",
+        schaden_beschreibung: "Testbeschreibung",
+        zusammenfassung: "Testzusammenfassung"
+      })
+    };
+    
+    console.log('Extrahierte Daten:', extractedData);
+
+    // Aktualisiere das Dokument in der Datenbank mit dem erkannten Typ
+    const { error: updateError } = await supabase
+      .from('documents')
+      .update({
+        document_type: documentType,
+        status: 'verarbeitet',
+        metadata: {
+          ...params.metadata,
+          processed: true,
+          processingTime: new Date().toISOString(),
+          processId,
+          classification: {
+            type: documentType,
+            source: typeSource,
+            confidence
+          }
+        }
+      })
+      .eq('id', params.metadata.documentId);
+      
+    if (updateError) {
+      console.error('Fehler beim Aktualisieren des Dokuments:', updateError);
+    } else {
+      console.log('Dokument erfolgreich aktualisiert mit Typ:', documentType);
+    }
+    
     return {
-      documentType: 'misc',
-      processId: Date.now().toString(),
+      documentType,
+      processId,
       metadata: {
         processed: true,
         processingTime: new Date().toISOString(),
-        extractedData: {
-          title: params.metadata.originalName,
-          description: `Uploaded via ${params.metadata.source}`,
-          uploadedBy: params.metadata.uploadedBy
-        }
+        classification: {
+          type: documentType,
+          source: typeSource,
+          confidence
+        },
+        extractedData
       }
     };
   } catch (error) {
     console.error('Error processing document:', error);
+    if (error instanceof Error) {
+      console.error(`Fehlertyp: ${error.name}, Nachricht: ${error.message}, Stack: ${error.stack}`);
+    } else {
+      console.error('Unbekannter Fehlertyp:', error);
+    }
     return {
       error: error instanceof Error ? error.message : 'Unknown error processing document'
     };
@@ -240,4 +418,24 @@ export async function testOpenAIKey(): Promise<{ isValid: boolean; error?: strin
       error: error.message 
     };
   }
+}
+
+/**
+ * Konvertiert eine Datei in ein Base64-kodiertes Format
+ * 
+ * @param file Die zu konvertierende Datei
+ * @returns Das Base64-kodierte Ergebnis als String
+ */
+export async function fileToBase64(file: File | Blob): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      // Extract base64 data from data URL
+      const result = reader.result as string;
+      const base64 = result.split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror = (error) => reject(error);
+    reader.readAsDataURL(file);
+  });
 } 

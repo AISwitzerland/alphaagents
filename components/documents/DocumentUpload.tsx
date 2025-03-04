@@ -5,7 +5,8 @@ import { useDropzone } from 'react-dropzone';
 import { motion } from 'framer-motion';
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from '@/types/constants';
 import { DatabaseService } from '@/services/databaseService';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/services/supabaseClient';
+import { useSession } from '@/components/Auth/SessionProvider';
 
 interface DocumentUploadProps {
   source: 'chat' | 'dashboard';
@@ -22,6 +23,9 @@ export function DocumentUpload({ source = 'dashboard', contactData, skipAuth = f
   const [status, setStatus] = useState<'idle' | 'uploading' | 'processing' | 'success' | 'error'>('idle');
   const [progress, setProgress] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  
+  // Verwende den Session-Context
+  const { session, loading: sessionLoading } = useSession();
 
   const db = DatabaseService.getInstance();
 
@@ -66,8 +70,7 @@ export function DocumentUpload({ source = 'dashboard', contactData, skipAuth = f
       setProgress(0);
       console.log('Starte Upload-Prozess...');
 
-      // Get current session
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      // Verwende die Session aus dem Kontext
       console.log('Current session:', session ? 'Found' : 'Not found');
 
       if (!session && !skipAuth) {

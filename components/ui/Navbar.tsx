@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -18,51 +19,104 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleContactClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    // Schließe das mobile Menü, falls geöffnet
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  };
+
+  const handleProcessClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const processSection = document.getElementById('process');
+    if (processSection) {
+      processSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    // Schließe das mobile Menü, falls geöffnet
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  };
+
+  const handleFeaturesClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const featuresSection = document.getElementById('features');
+    if (featuresSection) {
+      featuresSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    // Schließe das mobile Menü, falls geöffnet
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  };
+
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-primary-900/90 backdrop-blur-lg shadow-lg' : ''
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white ${
+      isScrolled ? 'shadow-md' : 'bg-opacity-80'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <span className={`text-2xl font-bold ${
               isScrolled 
-                ? 'text-white' 
-                : 'bg-gradient-to-r from-primary-400 to-primary-600 text-transparent bg-clip-text'
+                ? 'text-primary-700' 
+                : 'text-primary-700'
             }`}>
-              AlphaAgents
+              Alpha Informatik
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <NavLink href="/features" isScrolled={isScrolled} isActive={pathname === '/features'}>
-              Features
-            </NavLink>
-            <NavLink href="/about" isScrolled={isScrolled} isActive={pathname === '/about'}>
-              Über uns
-            </NavLink>
-            <NavLink href="/contact" isScrolled={isScrolled} isActive={pathname === '/contact'}>
-              Kontakt
-            </NavLink>
-            <Link 
-              href="/dashboard" 
-              className={`px-4 py-2 rounded-full transition-colors duration-200 backdrop-blur-sm ${
-                isScrolled
-                  ? 'bg-white text-primary-900 hover:bg-primary-50'
-                  : 'bg-primary-600 text-white hover:bg-primary-700'
+          <div className="hidden md:flex items-center space-x-6">
+            <a 
+              href="#process"
+              onClick={handleProcessClick}
+              className={`font-medium transition-colors duration-200 ${
+                pathname === '/product'
+                  ? 'text-primary-700 border-b-2 border-primary-600 pb-1'
+                  : 'text-gray-700 hover:text-primary-700 hover:border-b-2 hover:border-primary-600 pb-1'
               }`}
             >
+              Unser Prozess
+            </a>
+            <a 
+              href="#features"
+              onClick={handleFeaturesClick}
+              className={`font-medium transition-colors duration-200 ${
+                pathname === '/services'
+                  ? 'text-primary-700 border-b-2 border-primary-600 pb-1'
+                  : 'text-gray-700 hover:text-primary-700 hover:border-b-2 hover:border-primary-600 pb-1'
+              }`}
+            >
+              Unsere Lösungen
+            </a>
+            <a 
+              href="#contact"
+              onClick={handleContactClick}
+              className={`font-medium transition-colors duration-200 ${
+                pathname === '/contact'
+                  ? 'text-primary-700 border-b-2 border-primary-600 pb-1'
+                  : 'text-gray-700 hover:text-primary-700 hover:border-b-2 hover:border-primary-600 pb-1'
+              }`}
+            >
+              Kontakt
+            </a>
+            <NavLink href="/dashboard" isScrolled={isScrolled} isActive={pathname === '/dashboard'}>
               Dashboard
-            </Link>
+            </NavLink>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-md text-white hover:bg-primary-800/50"
+              className={`p-2 rounded-md text-primary-700 hover:bg-primary-50`}
             >
               {isMobileMenuOpen ? (
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -88,38 +142,53 @@ export function Navbar() {
         transition={{ duration: 0.2 }}
         className={`${
           isMobileMenuOpen ? 'block' : 'hidden'
-        } md:hidden absolute top-16 inset-x-0 bg-primary-900/95 backdrop-blur-lg shadow-lg`}
+        } md:hidden absolute top-20 inset-x-0 bg-white shadow-lg border-t border-gray-200`}
       >
         <div className="px-4 pt-2 pb-3 space-y-1">
-          <MobileNavLink 
-            href="/features" 
-            isActive={pathname === '/features'}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Features
-          </MobileNavLink>
-          <MobileNavLink 
-            href="/about" 
-            isActive={pathname === '/about'}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Über uns
-          </MobileNavLink>
-          <MobileNavLink 
-            href="/contact" 
-            isActive={pathname === '/contact'}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Kontakt
-          </MobileNavLink>
-          <div className="pt-2">
-            <Link
+          <div className={`block px-4 py-2 rounded-md text-base font-medium ${
+            pathname === '/product'
+              ? 'text-primary-700 bg-gray-100'
+              : 'text-gray-700 hover:text-primary-700 hover:bg-gray-50'
+          }`}>
+            <a 
+              href="#process"
+              onClick={handleProcessClick}
+            >
+              Unser Prozess
+            </a>
+          </div>
+          <div className={`block px-4 py-2 rounded-md text-base font-medium ${
+            pathname === '/services'
+              ? 'text-primary-700 bg-gray-100'
+              : 'text-gray-700 hover:text-primary-700 hover:bg-gray-50'
+          }`}>
+            <a 
+              href="#features"
+              onClick={handleFeaturesClick}
+            >
+              Unsere Lösungen
+            </a>
+          </div>
+          <div className={`block px-4 py-2 rounded-md text-base font-medium ${
+            pathname === '/contact'
+              ? 'text-primary-700 bg-gray-100'
+              : 'text-gray-700 hover:text-primary-700 hover:bg-gray-50'
+          }`}>
+            <a 
+              href="#contact"
+              onClick={handleContactClick}
+            >
+              Kontakt
+            </a>
+          </div>
+          <div className="pt-2 space-y-2">
+            <MobileNavLink
               href="/dashboard"
+              isActive={pathname === '/dashboard'}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block px-4 py-2 rounded-md text-center text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-200"
             >
               Dashboard
-            </Link>
+            </MobileNavLink>
           </div>
         </div>
       </motion.div>
@@ -138,12 +207,8 @@ function NavLink({ href, children, isScrolled, isActive }: {
       href={href}
       className={`font-medium transition-colors duration-200 ${
         isActive
-          ? isScrolled
-            ? 'text-white'
-            : 'text-primary-600'
-          : isScrolled
-            ? 'text-primary-100 hover:text-white'
-            : 'text-white hover:text-primary-200'
+          ? 'text-primary-700 border-b-2 border-primary-600 pb-1'
+          : 'text-gray-700 hover:text-primary-700 hover:border-b-2 hover:border-primary-600 pb-1'
       }`}
     >
       {children}
@@ -168,8 +233,8 @@ function MobileNavLink({
       onClick={onClick}
       className={`block px-4 py-2 rounded-md text-base font-medium ${
         isActive
-          ? 'text-white bg-primary-800'
-          : 'text-primary-100 hover:text-white hover:bg-primary-800/50'
+          ? 'text-primary-700 bg-gray-100'
+          : 'text-gray-700 hover:text-primary-700 hover:bg-gray-50'
       }`}
     >
       {children}

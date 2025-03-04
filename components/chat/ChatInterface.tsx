@@ -419,7 +419,7 @@ export function ChatInterface() {
           >
             {/* Header */}
             <div className="p-4 bg-primary-600 text-white flex-shrink-0">
-              <h3 className="text-lg font-semibold">AlphaAgents Chat</h3>
+              <h3 className="text-lg font-semibold">Alpha Informatik Chat</h3>
               <p className="text-sm text-primary-100">Wie können wir Ihnen helfen?</p>
             </div>
 

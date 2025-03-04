@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const steps = [
   {
@@ -42,36 +43,80 @@ const steps = [
 ];
 
 export function ProcessSection() {
+  const handleTerminClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
-      {/* Background Decoration */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-1/2 -left-1/2 w-full h-full animate-float-slow opacity-5">
-          <div className="w-full h-full bg-primary-400 rounded-full blur-3xl"></div>
-        </div>
-      </div>
-
+    <section id="process" className="py-24 bg-gray-50 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="text-center mb-20">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-12">
+          <div>
+            <motion.span 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-sm font-semibold text-primary-600 uppercase tracking-wider"
+            >
+              Einfach & effizient
+            </motion.span>
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="mt-2 text-3xl md:text-4xl font-bold text-gray-900 mb-6"
+            >
+              Unser Prozess
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-lg text-gray-600 mb-8"
+            >
+              Unsere KI-gestützte Lösung vereinfacht die Dokumentenverarbeitung für Versicherungsunternehmen. Mit nur wenigen Schritten werden Ihre Dokumente intelligent erfasst, analysiert und für Sie aufbereitet.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="inline-block"
+            >
+              <a 
+                href="#contact" 
+                onClick={handleTerminClick}
+                className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-md font-medium transition-colors duration-300 inline-flex items-center"
+              >
+                Termin vereinbaren
+                <svg className="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
+            className="relative h-[400px] rounded-lg overflow-hidden shadow-xl"
           >
-            Wie es funktioniert
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg text-gray-600"
-          >
-            Ein einfacher Prozess für komplexe Dokumentenverarbeitung
-          </motion.p>
+            <Image 
+              src="/images/landing/Buchhaltung2.avif" 
+              alt="Professionelles Dokumentenmanagement" 
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary-700/20 to-primary-900/10"></div>
+          </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
           {steps.map((step, index) => (
             <motion.div
               key={step.title}
@@ -80,26 +125,28 @@ export function ProcessSection() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="relative"
             >
+              {/* Step Number */}
+              <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center font-bold text-sm z-10">
+                {index + 1}
+              </div>
+              
               {/* Connecting Line */}
               {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-primary-200">
-                  <div className="absolute right-0 -top-1 w-2 h-2 bg-primary-400 rounded-full"></div>
+                <div className="hidden lg:block absolute top-1/3 -right-4 w-8 h-0.5 bg-primary-200">
+                  <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-primary-400 rounded-full"></div>
                 </div>
               )}
               
-              <div className="relative rounded-2xl overflow-hidden bg-white shadow-xl border border-gray-100
-                p-6 hover:shadow-2xl transition-all duration-300 h-full group">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-transparent to-primary-50 opacity-0
-                  group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative rounded-lg overflow-hidden bg-white shadow-md border border-gray-100
+                p-6 hover:shadow-lg transition-all duration-300 h-full">
                 <div className="relative">
-                  <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center mb-4
-                    group-hover:bg-primary-200 transition-colors duration-300">
+                  <div className="w-12 h-12 rounded-full bg-primary-50 flex items-center justify-center mb-4">
                     <div className="text-primary-600">
                       {step.icon}
                     </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{step.title}</h3>
-                  <p className="text-gray-600">{step.description}</p>
+                  <h3 className="text-xl font-medium text-gray-900 mb-3">{step.title}</h3>
+                  <p className="text-gray-600 text-sm">{step.description}</p>
                 </div>
               </div>
             </motion.div>

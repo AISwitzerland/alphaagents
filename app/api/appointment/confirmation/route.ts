@@ -46,7 +46,7 @@ export async function POST(request: Request) {
           ${notizen ? `<li><strong>Notizen:</strong> ${notizen}</li>` : ''}
         </ul>
         
-        <p>Bei Fragen erreichen Sie uns unter Ihrer angegebenen Telefonnummer.</p>
+        <p>Bei Fragen erreichen Sie uns unter der Telefonnummer 044 123 45 67.</p>
         
         <p>Freundliche Grüsse<br>Ihr AlphaAgents Team</p>
       `,

@@ -8,6 +8,9 @@ export const supabase = createBrowserClient<Database>(
 
 // Automatische Anmeldung
 const autoLogin = async () => {
+  // Nur fortfahren, wenn wir im Browser sind
+  if (typeof window === 'undefined') return;
+  
   console.log('Starte automatische Anmeldung...');
 
   try {
@@ -35,8 +38,13 @@ const autoLogin = async () => {
   }
 };
 
-// Führe die automatische Anmeldung durch
-autoLogin();
+// Führe die automatische Anmeldung nur im Browser mit leichter Verzögerung aus
+if (typeof window !== 'undefined') {
+  // Mit einer kleinen Verzögerung ausführen, um sicherzustellen, dass die Seite vollständig geladen ist
+  setTimeout(() => {
+    autoLogin();
+  }, 100);
+}
 
 // Hilfsfunktion für die Anmeldung
 export async function signInWithEmail(email: string, password: string) {

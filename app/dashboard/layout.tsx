@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 // Icons für die Sidebar
 const DashboardIcon = () => (
@@ -30,6 +31,18 @@ const SettingsIcon = () => (
   </svg>
 );
 
+const HomeIcon = () => (
+  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+  </svg>
+);
+
+const LogoutIcon = () => (
+  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+  </svg>
+);
+
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: DashboardIcon },
   { name: 'Dokumente', href: '/dashboard/documents', icon: DocumentIcon },
@@ -44,6 +57,28 @@ export default function DashboardLayout({
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const router = useRouter();
+
+  // Überprüfen Sie, ob der Benutzer angemeldet ist
+  useEffect(() => {
+    const checkAuth = () => {
+      const cookies = document.cookie.split(';');
+      const authCookie = cookies.find(cookie => cookie.trim().startsWith('auth_session='));
+      if (!authCookie) {
+        router.push('/login');
+      }
+    };
+    
+    checkAuth();
+  }, [router]);
+
+  // Funktion zum Abmelden
+  const handleLogout = () => {
+    // Cookie löschen
+    document.cookie = 'auth_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    // Zur Login-Seite umleiten
+    router.push('/login');
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -57,7 +92,7 @@ export default function DashboardLayout({
           {/* Logo */}
           <div className="flex h-16 items-center justify-between px-4 bg-primary-900">
             <Link href="/" className="flex items-center space-x-2">
-              <span className="text-xl font-bold text-white">AlphaAgents</span>
+              <span className="text-xl font-bold text-white">Alpha Informatik</span>
             </Link>
             <button
               onClick={() => setIsSidebarOpen(false)}
@@ -81,6 +116,27 @@ export default function DashboardLayout({
                 <span className="ml-3">{item.name}</span>
               </Link>
             ))}
+            
+            {/* Divider */}
+            <div className="border-t border-gray-200 my-4"></div>
+            
+            {/* Zurück zur Startseite Link */}
+            <Link
+              href="/"
+              className="flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-primary-600 group"
+            >
+              <HomeIcon />
+              <span className="ml-3">Zur Startseite</span>
+            </Link>
+
+            {/* Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-red-600 group mt-2"
+            >
+              <LogoutIcon />
+              <span className="ml-3">Abmelden</span>
+            </button>
           </nav>
         </div>
       </motion.div>
@@ -104,7 +160,7 @@ export default function DashboardLayout({
         >
           <div className="flex h-16 items-center justify-between px-4 bg-primary-900">
             <Link href="/" className="flex items-center space-x-2">
-              <span className="text-xl font-bold text-white">AlphaAgents</span>
+              <span className="text-xl font-bold text-white">Alpha Informatik</span>
             </Link>
             <button
               onClick={() => setIsMobileMenuOpen(false)}
@@ -129,71 +185,69 @@ export default function DashboardLayout({
                   <span className="ml-3">{item.name}</span>
                 </Link>
               ))}
+              
+              {/* Divider */}
+              <div className="border-t border-gray-200 my-4"></div>
+              
+              {/* Zurück zur Startseite Link */}
+              <Link
+                href="/"
+                className="flex items-center px-4 py-3 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-primary-600 group"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <HomeIcon />
+                <span className="ml-3">Zur Startseite</span>
+              </Link>
+
+              {/* Logout Button */}
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center px-4 py-3 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-red-600 group mt-2"
+              >
+                <LogoutIcon />
+                <span className="ml-3">Abmelden</span>
+              </button>
             </nav>
           </div>
         </motion.div>
       </motion.div>
 
-      {/* Main Content */}
-      <div className={`flex flex-col ${isSidebarOpen ? 'md:pl-64' : ''}`}>
-        {/* Top Bar */}
-        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-          <button
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="md:hidden p-2 text-gray-500 hover:text-primary-600"
-          >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-
-          <button
-            onClick={() => setIsSidebarOpen(true)}
-            className={`${isSidebarOpen ? 'hidden' : ''} hidden md:block p-2 text-gray-500 hover:text-primary-600`}
-          >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-
-          {/* Search */}
-          <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-            <div className="relative flex flex-1 items-center">
-              <input
-                type="search"
-                placeholder="Dokumente durchsuchen..."
-                className="block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-              />
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          {/* User Menu */}
-          <div className="flex items-center gap-x-4 lg:gap-x-6">
-            {/* Notifications */}
-            <button className="p-2 text-gray-400 hover:text-gray-500">
+      {/* Main content */}
+      <div className="flex flex-col md:pl-64">
+        {/* Top bar for mobile */}
+        <div className="sticky top-0 z-10 bg-white md:hidden">
+          <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200">
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="p-2 rounded-md text-gray-600 hover:bg-gray-100"
+            >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-
-            {/* Profile */}
-            <button className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-full bg-primary-600 flex items-center justify-center text-white font-medium">
-                N
-              </div>
-            </button>
+            <div className="text-lg font-medium text-primary-700">Alpha Informatik</div>
+            <div className="w-6"></div> {/* Spacer to center logo */}
           </div>
         </div>
 
-        {/* Page Content */}
+        {/* Toggle sidebar button (for desktop) */}
+        <div className="fixed left-4 bottom-4 z-50 hidden md:block">
+          {!isSidebarOpen && (
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="p-2 rounded-full bg-primary-600 text-white shadow-lg hover:bg-primary-700"
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          )}
+        </div>
+
+        {/* Content */}
         <main className="flex-1">
           <div className="py-6">
-            <div className="mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
               {children}
             </div>
           </div>

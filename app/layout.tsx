@@ -1,5 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
+import { SessionProvider } from '@/components/Auth/SessionProvider'
+import { Preloader } from '@/components/ui/Preloader'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,7 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className} bg-white`}>
+        <Preloader />
+        <SessionProvider>
+          {children}
+        </SessionProvider>
+      </body>
     </html>
   )
 } 

@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const features = [
   {
@@ -61,59 +62,148 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section className="py-24 bg-gradient-to-b from-primary-900 to-primary-800 relative overflow-hidden">
-      {/* Background Decoration */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-1/2 -right-1/2 w-full h-full animate-float opacity-10">
-          <div className="w-full h-full bg-primary-400 rounded-full blur-3xl"></div>
-        </div>
-      </div>
-
+    <section id="features" className="py-24 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="text-center mb-20">
+        <div className="text-center mb-16">
+          <motion.span 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-sm font-semibold text-primary-600 uppercase tracking-wider"
+          >
+            Unsere Lösungen
+          </motion.span>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-3xl md:text-4xl font-bold text-white mb-4"
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="mt-2 text-3xl md:text-4xl font-bold text-gray-900 mb-4"
           >
-            Unsere Features
+            Digitalisieren Sie Ihre Versicherungsprozesse
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg text-primary-100"
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="max-w-2xl mx-auto text-lg text-gray-600"
           >
-            Modernste Technologie für Ihr Dokumentenmanagement
+            Entdecken Sie unsere leistungsstarken Features für ein effizientes Dokumentenmanagement.
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="relative group"
-            >
-              <div className="relative rounded-2xl overflow-hidden backdrop-blur-lg bg-glass-primary border border-white/10
-                p-6 hover:bg-glass-secondary transition-all duration-300 h-full">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-400/5 via-transparent to-primary-600/5"></div>
-                <div className="relative">
-                  <div className="w-12 h-12 rounded-full bg-primary-500/20 flex items-center justify-center mb-4
-                    group-hover:bg-primary-500/30 transition-colors duration-300">
-                    <div className="text-primary-200">
+        {/* Image and Features Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+          {/* Image */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
+            className="relative h-[400px] rounded-lg overflow-hidden shadow-xl"
+          >
+            <Image 
+              src="/images/landing/Buchhaltung.avif" 
+              alt="Effizientes Dokumentenmanagement" 
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary-700/30 to-primary-900/20"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-primary-900/80 to-transparent">
+              <p className="text-white text-lg font-medium">Optimieren Sie Ihre Arbeitsprozesse</p>
+            </div>
+          </motion.div>
+
+          {/* Features List */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {features.slice(0, 4).map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="relative"
+              >
+                <div className="p-5 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300 h-full bg-white">
+                  <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center mb-4">
+                    <div className="text-primary-600">
                       {feature.icon}
                     </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
-                  <p className="text-primary-100">{feature.description}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm">{feature.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Additional Features with Counting Image */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-7 order-2 lg:order-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {features.slice(4, 6).map((feature, index) => (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="relative"
+                >
+                  <div className="p-5 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300 h-full bg-white">
+                    <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center mb-4">
+                      <div className="text-primary-600">
+                        {feature.icon}
+                      </div>
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                    <p className="text-gray-600 text-sm">{feature.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+              <div className="sm:col-span-2">
+                <div className="p-5 border border-primary-100 bg-primary-50 rounded-lg">
+                  <p className="text-primary-700 font-medium mb-3">Warum Alpha Informatik wählen?</p>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center">
+                      <svg className="w-5 h-5 text-accent-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700 text-sm">Reduzieren Sie manuelle Arbeit um bis zu 80%</span>
+                    </div>
+                    <div className="flex items-center">
+                      <svg className="w-5 h-5 text-accent-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700 text-sm">Senken Sie Fehlerquoten um mehr als 95%</span>
+                    </div>
+                    <div className="flex items-center">
+                      <svg className="w-5 h-5 text-accent-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700 text-sm">24/7 Verfügbarkeit mit Schweizer Support</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </motion.div>
-          ))}
+            </div>
+          </div>
+          
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
+            className="lg:col-span-5 order-1 lg:order-2 relative h-[350px] rounded-lg overflow-hidden shadow-xl"
+          >
+            <Image 
+              src="/images/landing/counting.jpg" 
+              alt="Finanzielle Vorteile" 
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary-700/30 to-primary-900/20"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-primary-900/80 to-transparent">
+              <p className="text-white text-lg font-medium">Effizienz, die sich auszahlt</p>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
