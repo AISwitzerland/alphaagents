@@ -21,6 +21,7 @@
     "@types/node": "20.11.24",
     "@types/react": "18.2.61",
     "@types/react-dom": "18.2.19",
+    "@types/uuid": "^10.0.0",
     "autoprefixer": "10.4.18",
     "canvas": "^3.1.0",
     "framer-motion": "^12.4.7",
@@ -38,7 +39,9 @@
     "sharp": "^0.33.5",
     "tailwindcss": "3.4.1",
     "tesseract.js": "^5.0.5",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "uuid": "^11.1.0",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
