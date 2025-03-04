@@ -81,10 +81,11 @@ export default function UploadPage() {
         setUploadStatus(prev => ({ ...prev, [file.name]: 'uploading' }));
         setUploadProgress(prev => ({ ...prev, [file.name]: 10 }));
         
-        // Mock-Benutzer für Testzwecke
+        // Mock-Benutzer für Testzwecke mit UUID
         const userData = {
           name: 'Test Benutzer',
-          email: 'test@example.com'
+          email: 'test@example.com',
+          id: '550e8400-e29b-41d4-a716-446655440000' // Statische UUID für Testzwecke
         };
         
         // Start des Uploads mit Updates für den Fortschritt

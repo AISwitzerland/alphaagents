@@ -92,7 +92,8 @@ export class DocumentAgent {
             originalName: document.fileName,
             uniqueName: uniqueFileName
           },
-          uploaded_by: document.metadata.uploadedBy.email
+          uploaded_by: document.metadata.uploadedBy.id || 
+                       '550e8400-e29b-41d4-a716-446655440000' // Fallback UUID wenn keine ID vorhanden
         })
         .select()
         .single();
