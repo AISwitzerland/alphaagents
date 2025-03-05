@@ -25,7 +25,7 @@ export function HeroSection() {
     <div className="relative min-h-screen flex items-center overflow-hidden bg-white">
       {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-white">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-800/90 to-primary-900/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-800/95 to-primary-900/90"></div>
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: 'url(/images/landing/office.jpg)' }}
@@ -45,29 +45,31 @@ export function HeroSection() {
               transition={{ duration: 0.8 }}
               className="lg:col-span-7"
             >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                Automatisierung für Ihr Unternehmen
-              </h1>
-              <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl">
-                Unsere KI-gestützte Prozessautomatisierung optimiert Ihre Geschäftsabläufe und spart Zeit und Kosten bei repetitiven Aufgaben.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <a 
-                  href="#contact"
-                  onClick={handleBeratungClick}
-                  className="inline-flex justify-center items-center px-8 py-4 rounded-md bg-accent-500 text-white font-medium hover:bg-accent-600 
-                    transition-all duration-300 shadow-lg"
-                >
-                  Beratung anfordern
-                </a>
-                <a
-                  href="#features"
-                  onClick={handleMehrErfahrenClick}
-                  className="inline-flex justify-center items-center px-8 py-4 rounded-md bg-white text-primary-700 font-medium 
-                    hover:bg-gray-100 transition-all duration-300 shadow-lg"
-                >
-                  Mehr erfahren
-                </a>
+              <div className="bg-black/30 backdrop-blur-sm p-6 rounded-lg">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-xl shadow-black">
+                  Automatisierung für Ihr Unternehmen
+                </h1>
+                <p className="text-lg md:text-xl text-white mb-8 max-w-2xl drop-shadow-lg shadow-black">
+                  Unsere KI-gestützte Prozessautomatisierung optimiert Ihre Geschäftsabläufe und spart Zeit und Kosten bei repetitiven Aufgaben.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a 
+                    href="#contact"
+                    onClick={handleBeratungClick}
+                    className="inline-flex justify-center items-center px-8 py-4 rounded-md bg-accent-500 text-white font-medium hover:bg-accent-600 
+                      transition-all duration-300 shadow-lg"
+                  >
+                    Beratung anfordern
+                  </a>
+                  <a
+                    href="#features"
+                    onClick={handleMehrErfahrenClick}
+                    className="inline-flex justify-center items-center px-8 py-4 rounded-md bg-white text-primary-700 font-medium 
+                      hover:bg-gray-100 transition-all duration-300 shadow-lg"
+                  >
+                    Mehr erfahren
+                  </a>
+                </div>
               </div>
             </motion.div>
 
