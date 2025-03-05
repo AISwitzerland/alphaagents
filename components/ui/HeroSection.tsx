@@ -26,13 +26,12 @@ export function HeroSection() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-white">
         <div className="absolute inset-0 bg-gradient-to-r from-primary-800/90 to-primary-900/80"></div>
-        <Image 
-          src="/images/landing/office.jpg" 
-          alt="IT-Automatisierung für Unternehmen" 
-          fill 
-          priority
-          className="object-cover"
-        />
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: 'url(/images/landing/office.jpg)' }}
+          role="img"
+          aria-label="IT-Automatisierung für Unternehmen"
+        ></div>
       </div>
 
       {/* Content Layer */}

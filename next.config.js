@@ -22,6 +22,9 @@ const nextConfig = {
   },
   images: {
     domains: ['vzcjnobtmbknpgkrvcnu.supabase.co'],
+    // Füge die neue Konfiguration für unoptimierte Bilder hinzu
+    dangerouslyAllowSVG: true,
+    unoptimized: true,
   },
 }
 
