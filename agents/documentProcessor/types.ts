@@ -10,6 +10,7 @@ export interface Document {
     uploadedBy: {
       name: string;
       email: string;
+      id?: string;
     };
     uploadedAt: string;
     [key: string]: unknown;

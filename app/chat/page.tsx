@@ -19,7 +19,6 @@ export default function ChatPage() {
               <li>• Unterstützte Formate: PDF, Word, JPEG, PNG, TIFF</li>
               <li>• Maximale Dateigröße: 20MB</li>
               <li>• Bitte stellen Sie sicher, dass alle Dokumente lesbar sind</li>
-              <li>• Nach dem Upload erhalten Sie eine Bestätigung per E-Mail</li>
             </ul>
           </div>
         </div>

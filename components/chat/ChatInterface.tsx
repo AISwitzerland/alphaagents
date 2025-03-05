@@ -21,11 +21,24 @@ interface AppointmentFormData {
   notizen?: string;
 }
 
-const WELCOME_MESSAGE: Message = {
-  id: 'welcome',
-  type: 'bot',
-  content: '👋 Hi! Ich bin Ihr Versicherungsassistent.\n\nIch kann Ihnen helfen bei:\n• 📄 Dokumente hochladen\n• ❓ Versicherungsfragen\n• 🚨 Schadensmeldungen\n• ✏️ Vertragsänderungen',
-  timestamp: new Date(),
+// Mehrere Willkommensnachrichten für Abwechslung
+const getWelcomeMessage = (): Message => {
+  const greetings = [
+    '👋 Hallo! Ich bin Ihr neuer Versicherungsassistent. Probieren Sie mich aus!',
+    '👋 Herzlich willkommen! Ich bin Ihr digitaler Versicherungsassistent. Wie kann ich Ihnen heute helfen?',
+    '👋 Guten Tag! Ich bin Ihr persönlicher Assistent für alle Versicherungsfragen. Testen Sie meine Fähigkeiten!',
+    '👋 Willkommen! Ich bin Ihr neuer KI-Assistent und helfe Ihnen gerne weiter. Stellen Sie mir Ihre Fragen!'
+  ];
+  
+  // Zufällige Begrüßung auswählen
+  const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+  
+  return {
+    id: 'welcome',
+    type: 'bot',
+    content: `${randomGreeting}\n\nIch kann Ihnen helfen bei:\n• 📅 Termin vereinbaren\n• 📄 Dokumente hochladen\n• ❓ Allgemeine Fragen zu Versicherungen (FAQs)`,
+    timestamp: new Date(),
+  };
 };
 
 export function ChatInterface() {
@@ -74,7 +87,7 @@ export function ChatInterface() {
   // Show welcome message when chat is opened
   useEffect(() => {
     if (isOpen && messages.length === 0) {
-      setMessages([WELCOME_MESSAGE]);
+      setMessages([getWelcomeMessage()]);
     }
   }, [isOpen]);
 

@@ -10,6 +10,8 @@ interface DocumentState {
   isLoading: boolean;
   error: string | null;
   lastSynced: Date | null;
+  // Cache für Dokument-URLs
+  documentUrls: Record<string, { url: string; expires: number }>;
   
   // Aktionen
   fetchDocuments: () => Promise<void>;
@@ -18,6 +20,7 @@ interface DocumentState {
   deleteDocument: (id: string) => Promise<void>;
   getDocumentById: (id: string) => Document | undefined;
   getDocumentsByStatus: (status: string) => Document[];
+  getDocumentUrl: (documentId: string) => Promise<string | null>;
 }
 
 export const useDocumentStore = create<DocumentState>()(
@@ -27,6 +30,7 @@ export const useDocumentStore = create<DocumentState>()(
       isLoading: false,
       error: null,
       lastSynced: null,
+      documentUrls: {},
       
       // Laden aller Dokumente aus Supabase
       fetchDocuments: async () => {
@@ -69,9 +73,12 @@ export const useDocumentStore = create<DocumentState>()(
             isLoading: false,
             lastSynced: new Date()
           });
-        } catch (err: any) {
-          console.error('Fehler beim Laden der Dokumente:', err.message);
-          set({ isLoading: false, error: err.message, documents: [] }); // Stelle sicher, dass documents immer ein Array ist
+        } catch (error) {
+          console.error('Fehler beim Laden der Dokumente:', error);
+          set({ 
+            error: error instanceof Error ? error.message : 'Unbekannter Fehler', 
+            isLoading: false 
+          });
         }
       },
       
@@ -185,6 +192,53 @@ export const useDocumentStore = create<DocumentState>()(
       
       getDocumentsByStatus: (status: string) => {
         return get().documents.filter(doc => doc.status.status === status);
+      },
+      
+      // Neue Methode zur Erstellung von signierten URLs für Dokumente
+      getDocumentUrl: async (documentId: string) => {
+        const { documentUrls, documents } = get();
+        
+        // Prüfen, ob wir bereits eine gültige URL im Cache haben
+        const cachedUrl = documentUrls[documentId];
+        if (cachedUrl && cachedUrl.expires > Date.now()) {
+          return cachedUrl.url;
+        }
+        
+        // Dokument aus dem Store holen
+        const document = documents.find(doc => doc.id === documentId);
+        if (!document || !document.filePath) {
+          console.error('Dokument nicht gefunden oder hat keinen Dateipfad:', documentId);
+          return null;
+        }
+        
+        try {
+          // Signierte URL für 1 Stunde erstellen
+          const { data, error } = await supabase.storage
+            .from('documents')
+            .createSignedUrl(document.filePath, 3600);
+          
+          if (error) {
+            console.error('Fehler beim Erstellen der signierten URL:', error);
+            return null;
+          }
+          
+          // URL im Cache speichern (Ablauf in 55 Minuten, um etwas Puffer zu haben)
+          const expiresAt = Date.now() + 55 * 60 * 1000;
+          set({
+            documentUrls: {
+              ...documentUrls,
+              [documentId]: {
+                url: data.signedUrl,
+                expires: expiresAt
+              }
+            }
+          });
+          
+          return data.signedUrl;
+        } catch (error) {
+          console.error('Fehler beim Abrufen der Dokument-URL:', error);
+          return null;
+        }
       }
     }),
     {
