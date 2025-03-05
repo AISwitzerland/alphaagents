@@ -25,7 +25,7 @@ export function HeroSection() {
     <div className="relative min-h-screen flex items-center overflow-hidden bg-white">
       {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-white">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-800/95 to-primary-900/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-800/85 to-primary-900/75"></div>
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: 'url(/images/landing/office.jpg)' }}
@@ -45,11 +45,11 @@ export function HeroSection() {
               transition={{ duration: 0.8 }}
               className="lg:col-span-7"
             >
-              <div className="bg-black/30 backdrop-blur-sm p-6 rounded-lg">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-xl shadow-black">
+              <div className="bg-black/20 backdrop-blur-md p-6 rounded-xl">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight text-shadow-soft">
                   Automatisierung für Ihr Unternehmen
                 </h1>
-                <p className="text-lg md:text-xl text-white mb-8 max-w-2xl drop-shadow-lg shadow-black">
+                <p className="text-lg md:text-xl text-white mb-8 max-w-2xl">
                   Unsere KI-gestützte Prozessautomatisierung optimiert Ihre Geschäftsabläufe und spart Zeit und Kosten bei repetitiven Aufgaben.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">

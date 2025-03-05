@@ -31,4 +31,8 @@ body {
   .form-label {
     @apply block text-sm font-medium text-gray-700 mb-1;
   }
+
+  .text-shadow-soft {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
 } 
