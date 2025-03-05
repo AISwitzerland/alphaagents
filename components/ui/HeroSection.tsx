@@ -27,7 +27,7 @@ export function HeroSection() {
       <div className="absolute inset-0 z-0 bg-white">
         <div className="absolute inset-0 bg-gradient-to-r from-primary-800/90 to-primary-900/80"></div>
         <Image 
-          src="/images/landing/premium_photo-1661772661721-b16346fe5b0f.avif" 
+          src="/images/landing/floriane-vita-FyD3OWBuXnY-unsplash.jpg" 
           alt="IT-Automatisierung für Unternehmen" 
           fill 
           priority
