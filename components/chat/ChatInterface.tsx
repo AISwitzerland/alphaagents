@@ -24,10 +24,10 @@ interface AppointmentFormData {
 // Mehrere Willkommensnachrichten für Abwechslung
 const getWelcomeMessage = (): Message => {
   const greetings = [
-    '👋 Hallo! Ich bin Ihr neuer Versicherungsassistent. Probieren Sie mich aus!',
-    '👋 Herzlich willkommen! Ich bin Ihr digitaler Versicherungsassistent. Wie kann ich Ihnen heute helfen?',
-    '👋 Guten Tag! Ich bin Ihr persönlicher Assistent für alle Versicherungsfragen. Testen Sie meine Fähigkeiten!',
-    '👋 Willkommen! Ich bin Ihr neuer KI-Assistent und helfe Ihnen gerne weiter. Stellen Sie mir Ihre Fragen!'
+    '👋 Hallo! Ich bin Alpha, Ihr digitaler Assistent für IT-Automatisierungslösungen. Wie kann ich Ihnen helfen?',
+    '👋 Herzlich willkommen bei Alpha Informatik! Ich bin Alpha und unterstütze Sie bei Ihren Automatisierungsprojekten.',
+    '👋 Guten Tag! Ich bin Alpha, Ihr Berater für massgeschneiderte IT-Lösungen aus Zürich. Stellen Sie mir Ihre Fragen!',
+    '👋 Willkommen! Ich bin Alpha und helfe Ihnen Zeit und Geld durch clevere Automatisierungen zu sparen. Probieren Sie mich aus!'
   ];
   
   // Zufällige Begrüßung auswählen
@@ -36,7 +36,7 @@ const getWelcomeMessage = (): Message => {
   return {
     id: 'welcome',
     type: 'bot',
-    content: `${randomGreeting}\n\nIch kann Ihnen helfen bei:\n• 📅 Termin vereinbaren\n• 📄 Dokumente hochladen\n• ❓ Allgemeine Fragen zu Versicherungen (FAQs)`,
+    content: `${randomGreeting}\n\nIch kann Ihnen helfen bei:\n• 📅 Termin vereinbaren\n• 📄 Dokumente hochladen\n• 💡 Informationen zu unseren IT-Automatisierungslösungen\n• ❓ Häufig gestellte Fragen (FAQs)`,
     timestamp: new Date(),
   };
 };
@@ -118,7 +118,7 @@ export function ChatInterface() {
       // Check for context switch
       const { shouldSwitchContext, newFlow, response } = await flowManager.handleMessage(newMessage.content);
 
-      if (shouldSwitchContext && newFlow === 'insurance_query') {
+      if (shouldSwitchContext && newFlow === 'automation_info') {
         // Clear data collection state immediately
         setDataCollection({
           step: 'idle',

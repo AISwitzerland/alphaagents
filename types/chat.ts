@@ -26,9 +26,9 @@ export type ChatFlowType =
   | 'idle'
   | 'document_upload'
   | 'appointment'
-  | 'insurance_query'
-  | 'claim'
-  | 'contract_change';
+  | 'automation_info'
+  | 'cost_saving'
+  | 'time_saving';
 
 export type DataCollectionStep = 
   | 'idle'

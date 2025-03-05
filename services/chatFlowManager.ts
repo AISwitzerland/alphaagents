@@ -37,10 +37,10 @@ export class ChatFlowManager {
     const newFlow = this.mapIntentToFlow(detectedIntent);
     
     // If it's an insurance query or general question, don't switch context
-    if (detectedIntent === 'insurance_info' || detectedIntent === 'general_question') {
+    if (detectedIntent === 'automation_info' || detectedIntent === 'general_question') {
       return { 
         shouldSwitchContext: false,
-        newFlow: 'insurance_query'
+        newFlow: 'automation_info'
       };
     }
 
@@ -72,9 +72,9 @@ export class ChatFlowManager {
     const intentFlowMap: { [key: string]: ChatFlowType } = {
       'upload_document': 'document_upload',
       'schedule_appointment': 'appointment',
-      'insurance_info': 'insurance_query',
-      'claim': 'claim',
-      'contract_change': 'contract_change'
+      'automation_info': 'automation_info',
+      'cost_saving': 'cost_saving',
+      'time_saving': 'time_saving'
     };
 
     return intentFlowMap[intent] || null;
@@ -101,11 +101,11 @@ export class ChatFlowManager {
     newFlow: ChatFlowType
   ): string {
     const responses: { [key: string]: string } = {
-      appointment: 'Ich sehe, Sie möchten einen Termin vereinbaren. Gerne wechseln wir dazu. Bitte füllen Sie das folgende Formular aus.',
+      appointment: 'Ich sehe, Sie möchten einen Beratungstermin vereinbaren. Gerne wechseln wir dazu. Bitte füllen Sie das folgende Formular aus.',
       document_upload: 'Sie möchten ein Dokument hochladen? Kein Problem, wir können das direkt machen. Darf ich nach Ihrem Namen fragen?',
-      insurance_query: 'Natürlich beantworte ich Ihre Frage zur Versicherung. Wie kann ich Ihnen helfen?',
-      claim: 'Sie möchten einen Schaden melden. Ich helfe Ihnen dabei. Können Sie mir den Schadenfall kurz beschreiben?',
-      contract_change: 'Sie möchten Ihren Vertrag ändern. Ich unterstütze Sie dabei. Was möchten Sie ändern?'
+      automation_info: 'Sie interessieren sich für unsere Automatisierungslösungen. Gerne stelle ich Ihnen vor, wie wir Ihrem Unternehmen helfen können.',
+      cost_saving: 'Sie möchten wissen, wie Sie durch Automatisierung Kosten sparen können. Lassen Sie mich Ihnen erklären, welche Möglichkeiten es gibt.',
+      time_saving: 'Zeitersparnis durch Automatisierung ist ein wichtiger Vorteil. Ich erkläre Ihnen gerne, welche Prozesse wir optimieren können.'
     };
 
     return responses[newFlow] || 'Ich helfe Ihnen gerne mit Ihrem Anliegen.';
