@@ -27,8 +27,8 @@ export function HeroSection() {
       <div className="absolute inset-0 z-0 bg-white">
         <div className="absolute inset-0 bg-gradient-to-r from-primary-800/90 to-primary-900/80"></div>
         <Image 
-          src="/images/landing/famillie.jpg" 
-          alt="Familie mit Versicherungsschutz" 
+          src="/images/landing/premium_photo-1661772661721-b16346fe5b0f.avif" 
+          alt="IT-Automatisierung für Unternehmen" 
           fill 
           priority
           className="object-cover"
@@ -47,10 +47,10 @@ export function HeroSection() {
               className="lg:col-span-7"
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                Sicherheit für Ihr Unternehmen
+                Automatisierung für Ihr Unternehmen
               </h1>
               <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl">
-                Unsere KI-gestützte Dokumentenautomatisierung optimiert Ihre Versicherungsprozesse und schützt, was Ihnen wichtig ist.
+                Unsere KI-gestützte Prozessautomatisierung optimiert Ihre Geschäftsabläufe und spart Zeit und Kosten bei repetitiven Aufgaben.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a 
@@ -81,26 +81,26 @@ export function HeroSection() {
             >
               <div className="bg-white rounded-lg shadow-xl p-6 backdrop-blur-lg">
                 <h3 className="text-xl font-semibold text-primary-700 mb-4">
-                  Dokumentenmanagement leicht gemacht
+                  IT-Automatisierung leicht gemacht
                 </h3>
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <svg className="w-5 h-5 text-accent-500 mt-1 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-gray-700">Automatische Klassifizierung</span>
+                    <span className="text-gray-700">Smarte Prozessoptimierung</span>
                   </li>
                   <li className="flex items-start">
                     <svg className="w-5 h-5 text-accent-500 mt-1 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-gray-700">Datenextraktion mit KI</span>
+                    <span className="text-gray-700">Maßgeschneiderte KI-Lösungen</span>
                   </li>
                   <li className="flex items-start">
                     <svg className="w-5 h-5 text-accent-500 mt-1 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-gray-700">Schweizer Datenschutzstandards</span>
+                    <span className="text-gray-700">Schweizer Qualitätsstandards</span>
                   </li>
                 </ul>
               </div>
