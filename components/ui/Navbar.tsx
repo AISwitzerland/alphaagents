@@ -63,13 +63,16 @@ export function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <span className={`text-2xl font-bold ${
-              isScrolled 
-                ? 'text-primary-700' 
-                : 'text-primary-700'
-            }`}>
-              Alpha Informatik
-            </span>
+            <div className="flex flex-col">
+              <span className={`text-2xl font-bold ${
+                isScrolled 
+                  ? 'text-primary-700' 
+                  : 'text-primary-700'
+              }`}>
+                Alpha Informatik
+              </span>
+              <span className="text-sm text-primary-500">Effizienz durch Innovation</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
