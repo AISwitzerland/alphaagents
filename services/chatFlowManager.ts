@@ -71,6 +71,7 @@ export class ChatFlowManager {
   private mapIntentToFlow(intent: string): ChatFlowType | null {
     const intentFlowMap: { [key: string]: ChatFlowType } = {
       'upload_document': 'document_upload',
+      'claim': 'document_upload',
       'schedule_appointment': 'appointment',
       'automation_info': 'automation_info',
       'cost_saving': 'cost_saving',
@@ -102,7 +103,7 @@ export class ChatFlowManager {
   ): string {
     const responses: { [key: string]: string } = {
       appointment: 'Ich sehe, Sie möchten einen Beratungstermin vereinbaren. Gerne wechseln wir dazu. Bitte füllen Sie das folgende Formular aus.',
-      document_upload: 'Sie möchten ein Dokument hochladen? Kein Problem, wir können das direkt machen. Darf ich nach Ihrem Namen fragen?',
+      document_upload: 'Ich verstehe, Sie möchten einen Schaden melden. 😟 Ich kann Ihnen dabei helfen, den Prozess zu starten. Dafür benötige ich zunächst Ihren Namen, bitte.',
       automation_info: 'Sie interessieren sich für unsere Automatisierungslösungen. Gerne stelle ich Ihnen vor, wie wir Ihrem Unternehmen helfen können.',
       cost_saving: 'Sie möchten wissen, wie Sie durch Automatisierung Kosten sparen können. Lassen Sie mich Ihnen erklären, welche Möglichkeiten es gibt.',
       time_saving: 'Zeitersparnis durch Automatisierung ist ein wichtiger Vorteil. Ich erkläre Ihnen gerne, welche Prozesse wir optimieren können.'
