@@ -210,4 +210,19 @@ export const intentPatterns = [
       'gespräch vereinbaren'
     ],
   },
+  {
+    intent: 'confirmation',
+    patterns: [
+      'ja',
+      'okay',
+      'ok',
+      'einverstanden',
+      'gerne',
+      'natürlich',
+      'sicher',
+      'bitte',
+      'machen wir',
+      'passt'
+    ],
+  },
 ]; 

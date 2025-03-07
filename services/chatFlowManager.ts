@@ -33,6 +33,22 @@ export class ChatFlowManager {
     // Detect intent from message
     const detectedIntent = await processIntent(message);
     
+    // Spezialfall: Wenn der Intent "confirmation" ist und wir vorher über Termine gesprochen haben
+    if (detectedIntent === 'confirmation') {
+      const previousMessages = this.contextState.flowHistory;
+      const currentFlow = this.contextState.activeFlow.currentFlow;
+      
+      // Wenn wir gerade über Kostenoptimierung oder Zeitersparnis sprechen und der Benutzer zustimmt,
+      // wechseln wir zum Termin-Flow
+      if (currentFlow === 'cost_saving' || currentFlow === 'time_saving') {
+        return {
+          shouldSwitchContext: true,
+          newFlow: 'appointment',
+          response: 'Perfekt! Um einen Beratungstermin zu vereinbaren, füllen Sie bitte das folgende Formular aus.'
+        };
+      }
+    }
+    
     // Map intent to flow type
     const newFlow = this.mapIntentToFlow(detectedIntent);
     
@@ -73,6 +89,7 @@ export class ChatFlowManager {
       'upload_document': 'document_upload',
       'claim': 'document_upload',
       'schedule_appointment': 'appointment',
+      'confirmation': 'appointment',
       'automation_info': 'automation_info',
       'cost_saving': 'cost_saving',
       'time_saving': 'time_saving'
