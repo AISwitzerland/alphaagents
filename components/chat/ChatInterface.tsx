@@ -13,6 +13,7 @@ import { AppointmentCalendar } from '@/components/appointments/AppointmentCalend
 import { AppointmentService } from '@/services/appointmentService';
 import { ChatFlowManager } from '@/services/chatFlowManager';
 import { Message, UserContactData, AppointmentStep, DataCollectionStep, DataCollectionState } from '@/types/chat';
+import { ChatIcon } from '@/components/icons/ChatIcon';
 
 interface AppointmentFormData {
   name: string;
@@ -136,6 +137,9 @@ export function ChatInterface() {
             timestamp: new Date(),
           };
           setMessages(prev => [...prev, switchMessage]);
+          
+          // Speichere die Bot-Nachricht bei Kontextwechsel im ChatFlowManager
+          flowManager.setLastBotMessage(response);
         }
         
         setIsTyping(false);
@@ -154,6 +158,9 @@ export function ChatInterface() {
             timestamp: new Date(),
           };
           setMessages(prev => [...prev, switchMessage]);
+          
+          // Speichere die Bot-Nachricht bei Kontextwechsel im ChatFlowManager
+          flowManager.setLastBotMessage(response);
         }
 
         // Reset states when switching context
@@ -254,6 +261,9 @@ export function ChatInterface() {
         content: data.content,
         timestamp: new Date(),
       };
+
+      // Speichere die Bot-Nachricht im ChatFlowManager
+      flowManager.setLastBotMessage(data.content);
 
       setMessages(prev => [...prev, botResponse]);
     } catch (err) {
@@ -432,8 +442,16 @@ export function ChatInterface() {
           >
             {/* Header */}
             <div className="p-4 bg-primary-600 text-white flex-shrink-0">
-              <h3 className="text-lg font-semibold">Alpha Informatik Chat</h3>
-              <p className="text-sm text-primary-100">Wie können wir Ihnen helfen?</p>
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center">
+                  <ChatIcon className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Alpha Informatik Chat</h3>
+                  <p className="text-sm text-primary-100">Effizienz durch Innovation</p>
+                  <p className="text-sm text-primary-100">Wie können wir Ihnen helfen?</p>
+                </div>
+              </div>
             </div>
 
             {/* Messages */}

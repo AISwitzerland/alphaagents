@@ -4,6 +4,7 @@ import { processIntent } from './intentService';
 export class ChatFlowManager {
   private static instance: ChatFlowManager;
   private contextState: ChatContextState;
+  private lastBotMessage: string | null = null;
 
   private constructor() {
     this.contextState = {
@@ -33,18 +34,25 @@ export class ChatFlowManager {
     // Detect intent from message
     const detectedIntent = await processIntent(message);
     
-    // Spezialfall: Wenn der Intent "confirmation" ist und wir vorher über Termine gesprochen haben
+    // Spezialfall: Wenn der Intent "confirmation" ist
     if (detectedIntent === 'confirmation') {
-      const previousMessages = this.contextState.flowHistory;
       const currentFlow = this.contextState.activeFlow.currentFlow;
       
-      // Wenn wir gerade über Kostenoptimierung oder Zeitersparnis sprechen und der Benutzer zustimmt,
-      // wechseln wir zum Termin-Flow
-      if (currentFlow === 'cost_saving' || currentFlow === 'time_saving') {
+      // Nur wenn wir explizit über Kostenoptimierung oder Zeitersparnis gesprochen haben
+      // UND der letzte Bot-Vorschlag einen Termin enthielt, wechseln wir zum Termin-Flow
+      if ((currentFlow === 'cost_saving' || currentFlow === 'time_saving') && 
+          message.toLowerCase() === 'ja' && 
+          this.lastMessageContainedAppointmentSuggestion()) {
         return {
           shouldSwitchContext: true,
           newFlow: 'appointment',
           response: 'Perfekt! Um einen Beratungstermin zu vereinbaren, füllen Sie bitte das folgende Formular aus.'
+        };
+      } else {
+        // In allen anderen Fällen bleiben wir im aktuellen Kontext
+        return {
+          shouldSwitchContext: false,
+          newFlow: currentFlow
         };
       }
     }
@@ -89,7 +97,6 @@ export class ChatFlowManager {
       'upload_document': 'document_upload',
       'claim': 'document_upload',
       'schedule_appointment': 'appointment',
-      'confirmation': 'appointment',
       'automation_info': 'automation_info',
       'cost_saving': 'cost_saving',
       'time_saving': 'time_saving'
@@ -184,5 +191,40 @@ export class ChatFlowManager {
 
     this.contextState.activeFlow = previousState;
     return previousState;
+  }
+
+  // Hilfsmethode, um zu prüfen, ob die letzte Bot-Nachricht einen Terminvorschlag enthielt
+  private lastMessageContainedAppointmentSuggestion(): boolean {
+    // In einer echten Implementierung würden wir hier die letzten Bot-Nachrichten prüfen
+    // und nach Schlüsselwörtern wie "Termin", "Beratung", "vereinbaren" suchen
+    
+    // Wir speichern die letzte Bot-Nachricht in einer Klassenvariable
+    if (!this.lastBotMessage) {
+      return false;
+    }
+    
+    // Schlüsselwörter, die auf einen Terminvorschlag hindeuten
+    const appointmentKeywords = [
+      'termin',
+      'beratung',
+      'vereinbaren',
+      'kalender',
+      'besprechen',
+      'beratungstermin',
+      'einrichten',
+      'soll ich',
+      'möchten sie',
+      'wollen sie',
+      'können wir'
+    ];
+    
+    // Prüfen, ob die letzte Bot-Nachricht eines der Schlüsselwörter enthält
+    const lastMessageLower = this.lastBotMessage.toLowerCase();
+    return appointmentKeywords.some(keyword => lastMessageLower.includes(keyword));
+  }
+  
+  // Methode zum Speichern der letzten Bot-Nachricht
+  public setLastBotMessage(message: string): void {
+    this.lastBotMessage = message;
   }
 } 
