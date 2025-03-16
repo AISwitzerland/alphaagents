@@ -1,48 +1,121 @@
-import { AgentType } from '../types/coordination';
-import { BaseAgent } from '../interfaces/BaseAgent';
-import { DocumentAgent } from '../agents/documentProcessor/DocumentAgent';
-import { OCRAgentSimplified } from '../agents/ocrProcessor/OCRAgentSimplified';
+import { OCRAgent } from '../agents/ocrProcessor/OCRAgent';
+import DocumentAgent from '../agents/documentProcessor/DocumentAgent';
+import { DocumentClassificationAgent } from './documentClassifier';
+import logger from '../utils/logger';
 
-// Singleton-Instanz der Registry
-let agentRegistryInstance: Map<AgentType, BaseAgent> | null = null;
+// Typdefinition für Agenten
+interface Agent {
+  getName(): string;
+}
+
+// Map für die gespeicherten Agenten
+const agentRegistry = new Map<string, Agent>();
+let agentRegistryInitialized = false;
 
 /**
- * Initialisiert die Registry mit allen verfügbaren Agenten
+ * Initialisiert die Agent-Registry
  */
-export function initializeAgentRegistry(): Map<AgentType, BaseAgent> {
-  const registry = new Map<AgentType, BaseAgent>();
-  
-  // Registriere den DocumentAgent
-  try {
-    registry.set('document', DocumentAgent.getInstance());
-    console.log('DocumentAgent successfully registered');
-  } catch (error) {
-    console.warn('Failed to register DocumentAgent:', error);
+export function initializeAgentRegistry(): void {
+  if (agentRegistryInitialized) {
+    logger.info('Agent Registry already initialized');
+    return;
   }
+
+  logger.info('Initializing Agent Registry...');
   
-  // Registriere den simulierten OCR-Agent (ohne externe Abhängigkeiten)
   try {
-    registry.set('ocr', OCRAgentSimplified.getInstance());
-    console.log('OCRAgentSimplified successfully registered');
+    // Registriere Dokument-Agent
+    try {
+      agentRegistry.set('document', DocumentAgent.getInstance());
+      logger.info('Document Agent successfully registered');
+    } catch (error) {
+      logger.warn('Failed to register Document Agent:', error);
+    }
+    
+    // Registriere OCR-Agent
+    try {
+      agentRegistry.set('ocr', new OCRAgent());
+      logger.info('OCR Agent successfully registered');
+    } catch (error) {
+      logger.warn('Failed to register OCR Agent:', error);
+    }
+    
+    // Registriere Klassifikations-Agent
+    try {
+      agentRegistry.set('classification', new DocumentClassificationAgent());
+      logger.info('Classification Agent successfully registered');
+    } catch (error) {
+      logger.warn('Failed to register Classification Agent:', error);
+    }
+    
+    agentRegistryInitialized = true;
+    logger.info('Agent Registry initialized successfully');
   } catch (error) {
-    console.warn('Failed to register OCRAgentSimplified:', error);
+    logger.error('Failed to initialize Agent Registry:', error);
+    throw new Error('Agent Registry initialization failed');
   }
-  
-  // Hier würden weitere Agenten registriert werden, sobald sie implementiert sind
-  // Beispiele:
-  // registry.set('classification', ClassificationAgent.getInstance());
-  // registry.set('extraction', ExtractionAgent.getInstance());
-  // registry.set('feedback', FeedbackAgent.getInstance());
-  
-  return registry;
 }
 
 /**
- * Gibt die Agent-Registry zurück
+ * Gibt einen Agenten aus der Registry zurück
+ * @param agentId Die ID des gesuchten Agenten
+ * @returns Der angeforderte Agent
  */
-export function getAgentRegistry(): Map<AgentType, BaseAgent> {
-  if (!agentRegistryInstance) {
-    agentRegistryInstance = initializeAgentRegistry();
+export function getAgent<T extends Agent>(agentId: string): T {
+  if (!agentRegistryInitialized) {
+    initializeAgentRegistry();
   }
-  return agentRegistryInstance;
+  
+  const agent = agentRegistry.get(agentId);
+  if (!agent) {
+    throw new Error(`Agent with ID '${agentId}' not found in registry`);
+  }
+  
+  return agent as T;
+}
+
+/**
+ * Gibt den OCR-Agenten zurück
+ */
+export function getOCRAgent(): OCRAgent {
+  return getAgent<OCRAgent>('ocr');
+}
+
+/**
+ * Gibt den Dokument-Agenten zurück
+ */
+export function getDocumentAgent(): DocumentAgent {
+  return getAgent<DocumentAgent>('document');
+}
+
+/**
+ * Gibt den Klassifikations-Agenten zurück
+ */
+export function getClassificationAgent(): DocumentClassificationAgent {
+  return getAgent<DocumentClassificationAgent>('classification');
+}
+
+/**
+ * Fährt alle Agenten herunter
+ */
+export async function shutdownAgents(): Promise<void> {
+  logger.info('Shutting down all agents...');
+  
+  try {
+    // Der DocumentAgent hat möglicherweise eine shutdown-Methode
+    const documentAgent = agentRegistry.get('document') as DocumentAgent;
+    if (documentAgent && typeof documentAgent.shutdown === 'function') {
+      await documentAgent.shutdown();
+      logger.info('Document Agent successfully shut down');
+    }
+    
+    // Registry zurücksetzen
+    agentRegistry.clear();
+    agentRegistryInitialized = false;
+    
+    logger.info('All agents successfully shut down');
+  } catch (error) {
+    logger.error('Error during agent shutdown:', error);
+    throw new Error('Failed to shutdown agents properly');
+  }
 } 
