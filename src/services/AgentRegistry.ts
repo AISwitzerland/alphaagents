@@ -1,7 +1,7 @@
 import { AgentType } from '../types/coordination';
 import { BaseAgent } from '../interfaces/BaseAgent';
 import { DocumentAgent } from '../agents/documentProcessor/DocumentAgent';
-import { OCRAgent } from '../agents/ocrProcessor/OCRAgent';
+import { OCRAgentSimplified } from '../agents/ocrProcessor/OCRAgentSimplified';
 
 // Singleton-Instanz der Registry
 let agentRegistryInstance: Map<AgentType, BaseAgent> | null = null;
@@ -20,12 +20,12 @@ export function initializeAgentRegistry(): Map<AgentType, BaseAgent> {
     console.warn('Failed to register DocumentAgent:', error);
   }
   
-  // Registriere den OCRAgent (Produktionsversion)
+  // Registriere den simulierten OCR-Agent (ohne externe Abhängigkeiten)
   try {
-    registry.set('ocr', OCRAgent.getInstance());
-    console.log('OCRAgent successfully registered for production');
+    registry.set('ocr', OCRAgentSimplified.getInstance());
+    console.log('OCRAgentSimplified successfully registered');
   } catch (error) {
-    console.warn('Failed to register OCRAgent:', error);
+    console.warn('Failed to register OCRAgentSimplified:', error);
   }
   
   // Hier würden weitere Agenten registriert werden, sobald sie implementiert sind
