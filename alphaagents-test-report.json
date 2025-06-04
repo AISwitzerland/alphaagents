@@ -1,0 +1,232 @@
+{
+  "timestamp": "2025-05-24T21:16:08.370Z",
+  "testSummary": {
+    "totalDocuments": 20,
+    "successfulDocuments": 14,
+    "failedDocuments": 6,
+    "successRate": 70,
+    "totalProcessingTimeMs": 571585,
+    "emailsSent": 14
+  },
+  "documentTypes": {
+    "Formular": 7,
+    "Versicherungspolice": 3,
+    "Schadenmeldung": 2,
+    "Notizen": 1,
+    "Tabelle": 1
+  },
+  "supabaseTables": {
+    "general_forms": 9,
+    "contracts": 3,
+    "damage_reports": 2
+  },
+  "confidenceDistribution": {
+    "high": 14,
+    "medium": 0,
+    "low": 0
+  },
+  "detailedResults": [
+    {
+      "filename": "1-vorlage-kuendigung-zusatzversicherung-krankenkasse-417657-de Kopie 2.docx",
+      "success": false,
+      "error": "Internal server error",
+      "details": "OCR processing failed: [object Object]",
+      "processingTime": 4533,
+      "fileSize": 30365
+    },
+    {
+      "filename": "1-vorlage-widerrufsrecht-aufgrund-informationspflichtverletzung-des-versicherers-de Kopie 2.docx",
+      "success": false,
+      "error": "Internal server error",
+      "details": "OCR processing failed: [object Object]",
+      "processingTime": 2193,
+      "fileSize": 29627
+    },
+    {
+      "filename": "2-vorlage-ordentliche-kuendigung-des-versicherungsvertrages-de Kopie 2.docx",
+      "success": false,
+      "error": "Internal server error",
+      "details": "OCR processing failed: [object Object]",
+      "processingTime": 3278,
+      "fileSize": 27756
+    },
+    {
+      "filename": "3-vorlage-kuendigung-im-schadensfall-de Kopie 2.docx",
+      "success": false,
+      "error": "Internal server error",
+      "details": "OCR processing failed: [object Object]",
+      "processingTime": 2213,
+      "fileSize": 35501
+    },
+    {
+      "filename": "Bildschirmfoto 2024-11-02 um 13.32.43 Kopie 2.png",
+      "success": true,
+      "processingTime": 23752,
+      "documentType": "Formular",
+      "table": "general_forms",
+      "confidence": 0.99,
+      "fileSize": 466302,
+      "summary": "Das Dokument ist ein Formular zur Schadenmeldung für eine Unfallversicherung. Es enthält Informationen über den Arbeitgeber, die verletzte Person, den Unfallort, die Art der Verletzung und weitere relevante Details.",
+      "supabaseUrl": "https://xhglgdyzqsiucfscydpi.supabase.co/project/default/table/general_forms"
+    },
+    {
+      "filename": "Bildschirmfoto 2024-12-16 um 20.00.31 Kopie 2.png",
+      "success": true,
+      "processingTime": 31814,
+      "documentType": "Versicherungspolice",
+      "table": "contracts",
+      "confidence": 0.99,
+      "fileSize": 318187,
+      "summary": "Kündigungsschreiben für einen Versicherungsvertrag.",
+      "supabaseUrl": "https://xhglgdyzqsiucfscydpi.supabase.co/project/default/table/contracts"
+    },
+    {
+      "filename": "Bildschirmfoto 2025-01-05 um 21.03.04 Kopie 2.png",
+      "success": true,
+      "processingTime": 41384,
+      "documentType": "Schadenmeldung",
+      "table": "damage_reports",
+      "confidence": 0.99,
+      "fileSize": 292123,
+      "summary": "Meldung eines Sturmschadens vom 27.03.2024 mit detaillierter Schadensbeschreibung.",
+      "supabaseUrl": "https://xhglgdyzqsiucfscydpi.supabase.co/project/default/table/damage_reports"
+    },
+    {
+      "filename": "Bildschirmfoto 2025-01-05 um 21.03.54 Kopie 2.png",
+      "success": true,
+      "processingTime": 22547,
+      "documentType": "Versicherungspolice",
+      "table": "contracts",
+      "confidence": 0.99,
+      "fileSize": 190094,
+      "summary": "Das Dokument ist ein Kündigungsschreiben für einen Versicherungsvertrag, adressiert an Swiss Protect, mit der Bitte um Bestätigung des Erhalts und keine weiteren Werbematerialien zu senden.",
+      "supabaseUrl": "https://xhglgdyzqsiucfscydpi.supabase.co/project/default/table/contracts"
+    },
+    {
+      "filename": "Bildschirmfoto 2025-01-08 um 19.49.28 Kopie 3.png",
+      "success": true,
+      "processingTime": 39467,
+      "documentType": "Formular",
+      "table": "general_forms",
+      "confidence": 0.99,
+      "fileSize": 284746,
+      "summary": "Das Dokument ist ein Formular zur Vertragstrennung mit Angaben zu Personen, Versicherungsnummern, Adressen und Bankverbindungen. Es enthält auch Unterschriftsfelder für die Einverständniserklärung.",
+      "supabaseUrl": "https://xhglgdyzqsiucfscydpi.supabase.co/project/default/table/general_forms"
+    },
+    {
+      "filename": "Bildschirmfoto 2025-02-16 um 22.27.10 Kopie 2.png",
+      "success": true,
+      "processingTime": 46175,
+      "documentType": "Notizen",
+      "table": "general_forms",
+      "confidence": 0.99,
+      "fileSize": 2399456,
+      "summary": "Das Dokument enthält handschriftliche Notizen zu Suchanfragen und Programmierpraktiken, einschließlich Tipps zur Formulierung von Suchanfragen, Modell-Prompting und Code-Management.",
+      "supabaseUrl": "https://xhglgdyzqsiucfscydpi.supabase.co/project/default/table/general_forms"
+    },
+    {
+      "filename": "Bildschirmfoto 2025-02-16 um 22.30.16 Kopie 2.png",
+      "success": true,
+      "processingTime": 55478,
+      "documentType": "Tabelle",
+      "table": "general_forms",
+      "confidence": 0.98,
+      "fileSize": 2572683,
+      "summary": "Das Dokument ist eine Tabelle, die verschiedene Agenten, deren Tools und Funktionen auflistet.",
+      "supabaseUrl": "https://xhglgdyzqsiucfscydpi.supabase.co/project/default/table/general_forms"
+    },
+    {
+      "filename": "Kündigung Versicherung Kopie 2.pdf",
+      "success": false,
+      "error": "Internal server error",
+      "details": "Document upload failed: [object Object]",
+      "processingTime": 512,
+      "fileSize": 338791
+    },
+    {
+      "filename": "Schlechte Qualität Kopie 2.webp",
+      "success": false,
+      "error": "Internal server error",
+      "details": "Document upload failed: Unknown error",
+      "processingTime": 58,
+      "fileSize": 25686
+    },
+    {
+      "filename": "Suva#2 Kopie 3.pdf",
+      "success": true,
+      "processingTime": 29547,
+      "documentType": "Formular",
+      "table": "general_forms",
+      "confidence": 0.99,
+      "fileSize": 567050,
+      "summary": "Das Dokument ist ein Formular zur Schadenmeldung für eine Unfallversicherung. Es enthält Felder für persönliche Daten, Unfallbeschreibung und beteiligte Personen.",
+      "supabaseUrl": "https://xhglgdyzqsiucfscydpi.supabase.co/project/default/table/general_forms"
+    },
+    {
+      "filename": "Suva1 Kopie 2.pdf",
+      "success": true,
+      "processingTime": 35171,
+      "documentType": "Formular",
+      "table": "general_forms",
+      "confidence": 0.99,
+      "fileSize": 253043,
+      "summary": "Das Dokument ist ein handschriftlich ausgefülltes Formular zur Schadenmeldung bei der Unfallversicherung. Es enthält Informationen über den Arbeitgeber, die verletzte Person, den Unfallhergang und weitere relevante Details.",
+      "supabaseUrl": "https://xhglgdyzqsiucfscydpi.supabase.co/project/default/table/general_forms"
+    },
+    {
+      "filename": "kuendigung-allianz Kopie 2.pdf",
+      "success": true,
+      "processingTime": 24101,
+      "documentType": "Versicherungspolice",
+      "table": "contracts",
+      "confidence": 0.99,
+      "fileSize": 177308,
+      "summary": "Kündigungsschreiben an eine Versicherung mit der Bitte um Bestätigung des Eingangs und der Beendigung des Vertrags.",
+      "supabaseUrl": "https://xhglgdyzqsiucfscydpi.supabase.co/project/default/table/contracts"
+    },
+    {
+      "filename": "meldeformular-kontoverbindung Kopie 2.pdf",
+      "success": true,
+      "processingTime": 25686,
+      "documentType": "Formular",
+      "table": "general_forms",
+      "confidence": 0.99,
+      "fileSize": 66105,
+      "summary": "Das Dokument ist ein Formular zur Angabe von Kontoverbindungsdaten bei einer Versicherung. Es enthält Felder für Name, Adresse, Versicherungsnummer, Bankverbindung und Unterschriften.",
+      "supabaseUrl": "https://xhglgdyzqsiucfscydpi.supabase.co/project/default/table/general_forms"
+    },
+    {
+      "filename": "meldung-sturmschaden Kopie 2.pdf",
+      "success": true,
+      "processingTime": 46543,
+      "documentType": "Schadenmeldung",
+      "table": "damage_reports",
+      "confidence": 0.99,
+      "fileSize": 152841,
+      "summary": "Meldung eines Sturmschadens am Eigentum von Max Mustermann.",
+      "supabaseUrl": "https://xhglgdyzqsiucfscydpi.supabase.co/project/default/table/damage_reports"
+    },
+    {
+      "filename": "ratenversicherung-unfall-de Kopie 2.pdf",
+      "success": true,
+      "processingTime": 53564,
+      "documentType": "Formular",
+      "table": "general_forms",
+      "confidence": 0.99,
+      "fileSize": 296753,
+      "summary": "Formular zur Meldung von Arbeitsunfähigkeit bei der Versicherung.",
+      "supabaseUrl": "https://xhglgdyzqsiucfscydpi.supabase.co/project/default/table/general_forms"
+    },
+    {
+      "filename": "vertragstrennung Kopie 2.pdf",
+      "success": true,
+      "processingTime": 26388,
+      "documentType": "Formular",
+      "table": "general_forms",
+      "confidence": 0.99,
+      "fileSize": 291896,
+      "summary": "Das Dokument ist ein Formular zur Vertragsänderung bei der Helsana Versicherung. Es enthält Felder für persönliche Daten wie Name, Geburtsdatum, Adresse und Versicherungsnummer. Es gibt Abschnitte für die aktuelle und neue Familien-Ansprechperson sowie Unterschriftenfelder.",
+      "supabaseUrl": "https://xhglgdyzqsiucfscydpi.supabase.co/project/default/table/general_forms"
+    }
+  ]
+}

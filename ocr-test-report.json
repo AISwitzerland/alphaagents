@@ -1,0 +1,334 @@
+{
+  "timestamp": "2025-05-24T14:02:25.414Z",
+  "summary": {
+    "total": 20,
+    "successful": 0,
+    "failed": 20,
+    "successRate": 0,
+    "avgProcessingTime": 0,
+    "avgConfidence": 0
+  },
+  "typeStatistics": {},
+  "detailedResults": [
+    {
+      "filename": "1-vorlage-kuendigung-zusatzversicherung-krankenkasse-417657-de Kopie 2.docx",
+      "success": false,
+      "processingTime": 32,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "1-vorlage-widerrufsrecht-aufgrund-informationspflichtverletzung-des-versicherers-de Kopie 2.docx",
+      "success": false,
+      "processingTime": 2,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "2-vorlage-ordentliche-kuendigung-des-versicherungsvertrages-de Kopie 2.docx",
+      "success": false,
+      "processingTime": 2,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "3-vorlage-kuendigung-im-schadensfall-de Kopie 2.docx",
+      "success": false,
+      "processingTime": 1,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "Bildschirmfoto 2024-11-02 um 13.32.43 Kopie 2.png",
+      "success": false,
+      "processingTime": 2,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "Bildschirmfoto 2024-12-16 um 20.00.31 Kopie 2.png",
+      "success": false,
+      "processingTime": 2,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "Bildschirmfoto 2025-01-05 um 21.03.04 Kopie 2.png",
+      "success": false,
+      "processingTime": 1,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "Bildschirmfoto 2025-01-05 um 21.03.54 Kopie 2.png",
+      "success": false,
+      "processingTime": 1,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "Bildschirmfoto 2025-01-08 um 19.49.28 Kopie 3.png",
+      "success": false,
+      "processingTime": 2,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "Bildschirmfoto 2025-02-16 um 22.27.10 Kopie 2.png",
+      "success": false,
+      "processingTime": 4,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "Bildschirmfoto 2025-02-16 um 22.30.16 Kopie 2.png",
+      "success": false,
+      "processingTime": 3,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "Kündigung Versicherung Kopie 2.pdf",
+      "success": false,
+      "processingTime": 2,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "Schlechte Qualität Kopie 2.webp",
+      "success": false,
+      "processingTime": 3,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "Suva#2 Kopie 3.pdf",
+      "success": false,
+      "processingTime": 2,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "Suva1 Kopie 2.pdf",
+      "success": false,
+      "processingTime": 1,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "kuendigung-allianz Kopie 2.pdf",
+      "success": false,
+      "processingTime": 1,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "meldeformular-kontoverbindung Kopie 2.pdf",
+      "success": false,
+      "processingTime": 2,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "meldung-sturmschaden Kopie 2.pdf",
+      "success": false,
+      "processingTime": 3,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "ratenversicherung-unfall-de Kopie 2.pdf",
+      "success": false,
+      "processingTime": 2,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    },
+    {
+      "filename": "vertragstrennung Kopie 2.pdf",
+      "success": false,
+      "processingTime": 1,
+      "extractedText": "",
+      "classification": {
+        "type": "Error",
+        "category": "Failed",
+        "confidence": 0,
+        "summary": "Processing failed",
+        "keyFields": {}
+      },
+      "error": "fetch failed",
+      "textLength": 0,
+      "wordCount": 0
+    }
+  ]
+}

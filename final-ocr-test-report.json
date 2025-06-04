@@ -1,0 +1,437 @@
+{
+  "timestamp": "2025-05-24T14:50:06.608Z",
+  "testSummary": {
+    "documentsTotal": 16,
+    "successful": 16,
+    "failed": 0,
+    "successRate": 100,
+    "totalProcessingTimeMs": 402422,
+    "avgProcessingTimeMs": 23268.875,
+    "avgConfidence": 0.9562500000000002,
+    "avgTextLength": 1454.375,
+    "avgKeyFields": 6.0625
+  },
+  "typeStatistics": {
+    "Formular": 8,
+    "Versicherungspolice": 4,
+    "Schadenmeldung": 2,
+    "Sonstiges Dokument": 2
+  },
+  "fieldStatistics": {
+    "person_name": 13,
+    "document_number": 8,
+    "document_date": 12,
+    "ahv_number": 1
+  },
+  "formatStatistics": {
+    ".png": {
+      "total": 7,
+      "successful": 7,
+      "avgTime": 22692.85714285714,
+      "totalTime": 158850
+    },
+    ".pdf": {
+      "total": 8,
+      "successful": 8,
+      "avgTime": 24803.25,
+      "totalTime": 198426
+    },
+    ".webp": {
+      "total": 1,
+      "successful": 1,
+      "avgTime": 15026,
+      "totalTime": 15026
+    }
+  },
+  "confidenceDistribution": {
+    "high": 14,
+    "medium": 2,
+    "low": 0
+  },
+  "detailedResults": [
+    {
+      "filename": "Bildschirmfoto 2024-11-02 um 13.32.43 Kopie 2.png",
+      "success": true,
+      "type": "Formular",
+      "category": "Versicherung",
+      "confidence": 0.99,
+      "textLength": 3033,
+      "wordCount": 351,
+      "keyFieldCount": 6,
+      "processingTime": 34244,
+      "fileSize": 466302,
+      "importantFields": [
+        "person_name",
+        "document_number",
+        "document_date"
+      ],
+      "keyFieldsData": {
+        "document_date": "2024-04-27",
+        "document_number": "89767880",
+        "person_name": "Natasha",
+        "amount": null,
+        "key_info": "Unfall am 27.04.2024 auf einem Fussballplatz, Verletzung: gebrochenes rechtes Bein.",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "Bildschirmfoto 2024-12-16 um 20.00.31 Kopie 2.png",
+      "success": true,
+      "type": "Versicherungspolice",
+      "category": "Versicherung",
+      "confidence": 0.99,
+      "textLength": 1069,
+      "wordCount": 126,
+      "keyFieldCount": 6,
+      "processingTime": 14217,
+      "fileSize": 318187,
+      "importantFields": [
+        "person_name",
+        "document_number",
+        "document_date"
+      ],
+      "keyFieldsData": {
+        "document_date": "2024-04-24",
+        "document_number": "S-234582533",
+        "person_name": "Max Muster",
+        "amount": null,
+        "key_info": "Kündigung des Versicherungsvertrags zum nächstmöglichen Zeitpunkt.",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "Bildschirmfoto 2025-01-05 um 21.03.04 Kopie 2.png",
+      "success": true,
+      "type": "Schadenmeldung",
+      "category": "Versicherung",
+      "confidence": 0.99,
+      "textLength": 1391,
+      "wordCount": 186,
+      "keyFieldCount": 6,
+      "processingTime": 21702,
+      "fileSize": 292123,
+      "importantFields": [
+        "person_name",
+        "document_date"
+      ],
+      "keyFieldsData": {
+        "document_date": "2024-03-27",
+        "document_number": null,
+        "person_name": "Max Mustermann",
+        "amount": null,
+        "key_info": "Sturmschaden mit Dachschaden, Wasserschaden im Keller, Garagendach defekt",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "Bildschirmfoto 2025-01-05 um 21.03.54 Kopie 2.png",
+      "success": true,
+      "type": "Versicherungspolice",
+      "category": "Versicherung",
+      "confidence": 0.99,
+      "textLength": 782,
+      "wordCount": 94,
+      "keyFieldCount": 6,
+      "processingTime": 17594,
+      "fileSize": 190094,
+      "importantFields": [
+        "person_name",
+        "document_number",
+        "document_date"
+      ],
+      "keyFieldsData": {
+        "document_date": "2024-04-24",
+        "document_number": "S-234582533",
+        "person_name": "Max Muster",
+        "amount": null,
+        "key_info": "Kündigung des bestehenden Versicherungsvertrags.",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "Bildschirmfoto 2025-01-08 um 19.49.28 Kopie 3.png",
+      "success": true,
+      "type": "Formular",
+      "category": "Versicherung",
+      "confidence": 0.99,
+      "textLength": 2039,
+      "wordCount": 245,
+      "keyFieldCount": 6,
+      "processingTime": 28490,
+      "fileSize": 284746,
+      "importantFields": [
+        "person_name",
+        "document_date"
+      ],
+      "keyFieldsData": {
+        "document_date": "2024-08-27",
+        "document_number": null,
+        "person_name": "Mustermann Max",
+        "amount": null,
+        "key_info": "Vertragstrennung per 27.08.2024, Anpassung der Familien-Ansprechperson und Zahlungsdetails.",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "Bildschirmfoto 2025-02-16 um 22.27.10 Kopie 2.png",
+      "success": true,
+      "type": "Sonstiges Dokument",
+      "category": "Sonstiges",
+      "confidence": 0.73,
+      "textLength": 36,
+      "wordCount": 7,
+      "keyFieldCount": 6,
+      "processingTime": 19819,
+      "fileSize": 2399456,
+      "importantFields": [],
+      "keyFieldsData": {
+        "document_date": null,
+        "document_number": null,
+        "person_name": null,
+        "amount": null,
+        "key_info": "Notizen zu Suchanfragen und Programmierpraktiken",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "Bildschirmfoto 2025-02-16 um 22.30.16 Kopie 2.png",
+      "success": true,
+      "type": "Sonstiges Dokument",
+      "category": "Sonstiges",
+      "confidence": 0.73,
+      "textLength": 684,
+      "wordCount": 60,
+      "keyFieldCount": 6,
+      "processingTime": 22784,
+      "fileSize": 2572683,
+      "importantFields": [],
+      "keyFieldsData": {
+        "document_date": null,
+        "document_number": null,
+        "person_name": null,
+        "amount": null,
+        "key_info": "Notizen zu Agenten, Tools und Funktionen",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "Kündigung Versicherung Kopie 2.pdf",
+      "success": true,
+      "type": "Versicherungspolice",
+      "category": "Versicherung",
+      "confidence": 0.99,
+      "textLength": 765,
+      "wordCount": 93,
+      "keyFieldCount": 6,
+      "processingTime": 17178,
+      "fileSize": 338791,
+      "importantFields": [
+        "person_name",
+        "document_number",
+        "document_date"
+      ],
+      "keyFieldsData": {
+        "document_date": "2024-04-24",
+        "document_number": "S-234582533",
+        "person_name": "Max Muster",
+        "amount": null,
+        "key_info": "Kündigung des bestehenden Versicherungsvertrags zum nächstmöglichen Zeitpunkt.",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "Schlechte Qualität Kopie 2.webp",
+      "success": true,
+      "type": "Formular",
+      "category": "Versicherung",
+      "confidence": 0.99,
+      "textLength": 889,
+      "wordCount": 114,
+      "keyFieldCount": 6,
+      "processingTime": 15026,
+      "fileSize": 25686,
+      "importantFields": [],
+      "keyFieldsData": {
+        "document_date": null,
+        "document_number": null,
+        "person_name": null,
+        "amount": null,
+        "key_info": "Schadensmeldung für Kfz mit Angaben zu Versicherungsnehmer und Fahrzeug.",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "Suva#2 Kopie 3.pdf",
+      "success": true,
+      "type": "Formular",
+      "category": "Versicherung",
+      "confidence": 0.99,
+      "textLength": 2691,
+      "wordCount": 318,
+      "keyFieldCount": 7,
+      "processingTime": 40424,
+      "fileSize": 567050,
+      "importantFields": [
+        "person_name",
+        "document_number",
+        "document_date",
+        "ahv_number"
+      ],
+      "keyFieldsData": {
+        "document_date": "2023-06-24",
+        "document_number": "897678800",
+        "person_name": "Anna Muster",
+        "amount": null,
+        "key_info": "Unfall durch herunterfallendes Dach, Verletzung am linken Arm.",
+        "ahv_number": "detected",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "Suva1 Kopie 2.pdf",
+      "success": true,
+      "type": "Formular",
+      "category": "Versicherung",
+      "confidence": 0.99,
+      "textLength": 2157,
+      "wordCount": 253,
+      "keyFieldCount": 6,
+      "processingTime": 31634,
+      "fileSize": 253043,
+      "importantFields": [
+        "person_name",
+        "document_number",
+        "document_date"
+      ],
+      "keyFieldsData": {
+        "document_date": "2023-06-24",
+        "document_number": "89767880",
+        "person_name": "Natasha",
+        "amount": null,
+        "key_info": "Unfall am 24.06.2023 auf einem Fussballplatz, betroffener Körperteil: rechtes Bein.",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "kuendigung-allianz Kopie 2.pdf",
+      "success": true,
+      "type": "Versicherungspolice",
+      "category": "Versicherung",
+      "confidence": 0.99,
+      "textLength": 709,
+      "wordCount": 85,
+      "keyFieldCount": 6,
+      "processingTime": 14198,
+      "fileSize": 177308,
+      "importantFields": [
+        "person_name",
+        "document_number",
+        "document_date"
+      ],
+      "keyFieldsData": {
+        "document_date": "2024-10-14",
+        "document_number": "923478204873",
+        "person_name": "Anna Muster",
+        "amount": null,
+        "key_info": "Kündigung des Versicherungsvertrags zum nächstmöglichen Zeitpunkt.",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "meldeformular-kontoverbindung Kopie 2.pdf",
+      "success": true,
+      "type": "Formular",
+      "category": "Versicherung",
+      "confidence": 0.97,
+      "textLength": 1077,
+      "wordCount": 143,
+      "keyFieldCount": 6,
+      "processingTime": 20136,
+      "fileSize": 66105,
+      "importantFields": [
+        "person_name",
+        "document_date"
+      ],
+      "keyFieldsData": {
+        "document_date": "2024-09-12",
+        "document_number": null,
+        "person_name": "Muster Max",
+        "amount": null,
+        "key_info": "Kontoverbindung für Prämien- und Leistungsrückerstattungen.",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "meldung-sturmschaden Kopie 2.pdf",
+      "success": true,
+      "type": "Schadenmeldung",
+      "category": "Versicherung",
+      "confidence": 0.99,
+      "textLength": 1392,
+      "wordCount": 186,
+      "keyFieldCount": 6,
+      "processingTime": 20167,
+      "fileSize": 152841,
+      "importantFields": [
+        "person_name",
+        "document_number",
+        "document_date"
+      ],
+      "keyFieldsData": {
+        "document_date": "2024-03-27",
+        "document_number": "23947349",
+        "person_name": "Max Mustermann",
+        "amount": null,
+        "key_info": "Sturmschaden am 27.03.2024 mit Schäden an Dach, Keller und Garage.",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "ratenversicherung-unfall-de Kopie 2.pdf",
+      "success": true,
+      "type": "Formular",
+      "category": "Versicherung",
+      "confidence": 0.99,
+      "textLength": 2812,
+      "wordCount": 376,
+      "keyFieldCount": 6,
+      "processingTime": 30091,
+      "fileSize": 296753,
+      "importantFields": [
+        "person_name"
+      ],
+      "keyFieldsData": {
+        "document_date": null,
+        "document_number": null,
+        "person_name": "Max Mustermann",
+        "amount": null,
+        "key_info": "Schadenmeldung bei Arbeitsunfähigkeit mit persönlichen Daten und Anweisungen zur Einreichung.",
+        "swiss_bank": "detected"
+      }
+    },
+    {
+      "filename": "vertragstrennung Kopie 2.pdf",
+      "success": true,
+      "type": "Formular",
+      "category": "Versicherung",
+      "confidence": 0.99,
+      "textLength": 1744,
+      "wordCount": 211,
+      "keyFieldCount": 6,
+      "processingTime": 24598,
+      "fileSize": 291896,
+      "importantFields": [
+        "person_name",
+        "document_date"
+      ],
+      "keyFieldsData": {
+        "document_date": "2024-08-27",
+        "document_number": null,
+        "person_name": "Mustermann Max",
+        "amount": null,
+        "key_info": "Angaben zur Vertragstrennung und neuen Vertragsdetails.",
+        "swiss_bank": "detected"
+      }
+    }
+  ]
+}

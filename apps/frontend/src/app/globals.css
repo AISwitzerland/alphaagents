@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Inter', system-ui, sans-serif;
+  padding-top: 4rem; /* 64px for fixed navbar */
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Professional Typography */
+@layer components {
+  .heading-1 {
+    @apply text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 leading-tight;
+  }
+  
+  .heading-2 {
+    @apply text-xl sm:text-2xl lg:text-3xl font-semibold text-neutral-800 leading-tight;
+  }
+  
+  .heading-3 {
+    @apply text-base sm:text-lg font-medium text-neutral-700 leading-snug;
+  }
+  
+  .body-text {
+    @apply text-sm sm:text-base text-neutral-600 leading-relaxed;
+  }
+  
+  .small-text {
+    @apply text-sm text-neutral-500;
+  }
+  
+  /* Professional Card Styles */
+  .card-professional {
+    @apply bg-white rounded-lg shadow-card border border-neutral-200 p-6;
+  }
+  
+  .card-professional:hover {
+    @apply shadow-card-hover border-neutral-300 transition-all duration-200;
+  }
+  
+  /* Professional Button Styles */
+  .btn-primary {
+    @apply bg-primary-700 hover:bg-primary-800 text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-sm;
+  }
+  
+  .btn-secondary {
+    @apply bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-medium px-6 py-3 rounded-lg transition-colors duration-200 border border-neutral-300;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-primary-700 text-primary-700 hover:bg-primary-700 hover:text-white font-medium px-6 py-3 rounded-lg transition-all duration-200;
+  }
+  
+  /* Professional Section Styles - Responsive */
+  .section-white {
+    @apply bg-white py-12 sm:py-16;
+  }
+  
+  .section-gray {
+    @apply bg-neutral-50 py-12 sm:py-16;
+  }
+  
+  .section-primary {
+    @apply bg-primary-700 text-white py-12 sm:py-16;
+  }
+  
+  /* Professional Container */
+  .container-professional {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Responsive Spacing */
+  .spacing-section {
+    @apply mb-8 sm:mb-12 lg:mb-16;
+  }
+  
+  .spacing-card {
+    @apply mb-6 sm:mb-8;
+  }
+  
+  /* Status Indicators */
+  .status-success {
+    @apply bg-success-50 text-success-700 px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .status-warning {
+    @apply bg-warning-50 text-warning-700 px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .status-error {
+    @apply bg-error-50 text-error-700 px-3 py-1 rounded-full text-sm font-medium;
+  }
+}
+
+/* Remove old glassmorphism - too playful for B2B */
