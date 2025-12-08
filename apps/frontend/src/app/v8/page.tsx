@@ -501,7 +501,7 @@ export default function CyberAIPage() {
       
       {/* Version Navigation */}
       <div className="fixed bottom-4 right-4 flex gap-2 z-50">
-        {['V4', 'V5', 'V6', 'V7', 'V8', 'V9'].map((v) => (
+        {['V4', 'V6', 'V7', 'V8'].map((v) => (
           <Link 
             key={v}
             href={`/${v.toLowerCase()}`} 

@@ -715,9 +715,9 @@ export default function HybridPremiumPage() {
       {/* Navigation */}
       <div className="fixed bottom-4 right-4 flex gap-2 z-50">
         <Link href="/v4" className="bg-white text-[#0A0A0A] px-3 py-1.5 rounded-full text-xs font-bold">V4</Link>
-        <Link href="/v5" className="bg-white/10 text-white px-3 py-1.5 rounded-full text-xs font-medium hover:bg-white/20 transition-colors">V5</Link>
         <Link href="/v6" className="bg-white/10 text-white px-3 py-1.5 rounded-full text-xs font-medium hover:bg-white/20 transition-colors">V6</Link>
         <Link href="/v7" className="bg-white/10 text-white px-3 py-1.5 rounded-full text-xs font-medium hover:bg-white/20 transition-colors">V7</Link>
+        <Link href="/v8" className="bg-white/10 text-white px-3 py-1.5 rounded-full text-xs font-medium hover:bg-white/20 transition-colors">V8</Link>
       </div>
     </div>
   );
