@@ -12,6 +12,7 @@ import {
 import { SplineScene } from '@/components/ui/spline-scene';
 import { Spotlight } from '@/components/ui/spotlight';
 import { Card } from '@/components/ui/card';
+import { Globe } from '@/components/ui/globe';
 
 // V8: CYBER AI - DARK TECH THEME with 3D Spline Scene
 // Interactive 3D, spotlight effect, glowing elements
@@ -416,6 +417,100 @@ export default function CyberAIPage() {
                 </CyberCard>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Globe Section - Global Reach */}
+      <section className="py-32 px-6 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left: Globe */}
+            <motion.div 
+              className="relative h-[500px]"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, type: "spring" }}
+            >
+              {/* Glow Effect */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <motion.div 
+                  className="w-80 h-80 rounded-full bg-cyan-500/20 blur-[100px]"
+                  animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                />
+              </div>
+              
+              <Globe className="opacity-90" />
+              
+              {/* Orbit Ring */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <motion.div
+                  className="w-[350px] h-[350px] border border-cyan-500/20 rounded-full"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                />
+                <motion.div
+                  className="absolute w-[280px] h-[280px] border border-violet-500/20 rounded-full"
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                />
+              </div>
+              
+              {/* Floating Label */}
+              <motion.div 
+                className="absolute inset-0 flex items-center justify-center"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <div className="text-center bg-slate-900/90 backdrop-blur-sm rounded-xl px-4 py-3 border border-cyan-500/30">
+                  <span className="text-sm font-mono text-cyan-400">Zürich HQ</span>
+                  <p className="text-xs text-slate-500">47.37°N 8.54°E</p>
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Right: Content */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="inline-block text-sm font-mono text-cyan-400 mb-4 px-4 py-2 bg-cyan-500/10 rounded-full border border-cyan-500/20">
+                &lt;global/&gt;
+              </span>
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+                Swiss Made,{' '}
+                <GlowText>Global Ready</GlowText>
+              </h2>
+              <p className="text-lg text-slate-400 mb-8">
+                Von Zürich aus bedienen wir Kunden weltweit. Schweizer Präzision 
+                trifft auf internationale AI-Expertise.
+              </p>
+
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { value: '🇨🇭', label: 'Swiss Hosting' },
+                  { value: '🌍', label: 'Global CDN' },
+                  { value: '🔒', label: 'GDPR Compliant' },
+                  { value: '⚡', label: '<100ms Latency' },
+                ].map((item, i) => (
+                  <motion.div
+                    key={item.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex items-center space-x-3 p-4 bg-slate-800/50 rounded-xl border border-slate-700/50"
+                  >
+                    <span className="text-2xl">{item.value}</span>
+                    <span className="text-sm text-slate-400">{item.label}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
