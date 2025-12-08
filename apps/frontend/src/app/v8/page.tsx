@@ -52,28 +52,24 @@ export default function CyberAIPage() {
       icon: FileText, 
       title: 'Document AI', 
       desc: 'OCR & Datenextraktion mit 99.7% Genauigkeit',
-      gradient: 'from-cyan-500 to-blue-500',
       stats: '< 2s pro Dokument'
     },
     { 
       icon: MessageSquare, 
       title: 'Chat Agent', 
       desc: 'Natürliche Konversation powered by GPT-4',
-      gradient: 'from-violet-500 to-purple-500',
       stats: '24/7 verfügbar'
     },
     { 
       icon: Mail, 
       title: 'Email Agent', 
       desc: 'Automatische Klassifizierung & Antworten',
-      gradient: 'from-emerald-500 to-teal-500',
       stats: '80% Zeitersparnis'
     },
     { 
       icon: Brain, 
       title: 'Multi-Agent System', 
       desc: 'Orchestrierte KI-Agenten für komplexe Tasks',
-      gradient: 'from-orange-500 to-red-500',
       stats: 'Enterprise Ready'
     },
   ];
@@ -404,8 +400,8 @@ export default function CyberAIPage() {
                 <CyberCard glow className="h-full">
                   <div className="p-8">
                     <div className="flex items-start justify-between mb-6">
-                      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center`}>
-                        <feature.icon className="w-7 h-7 text-white" />
+                      <div className="w-14 h-14 rounded-xl bg-slate-800 border border-cyan-500/30 flex items-center justify-center">
+                        <feature.icon className="w-7 h-7 text-cyan-400" />
                       </div>
                       <span className="text-xs font-mono text-cyan-400 px-3 py-1 bg-cyan-500/10 rounded-full border border-cyan-500/20">
                         {feature.stats}
