@@ -577,4 +577,3 @@ console.log(result.confidence);
     </div>
   )
 }
-

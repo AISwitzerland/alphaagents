@@ -77,6 +77,7 @@ export default {
       animation: {
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
         "spotlight": "spotlight 2s ease .75s 1 forwards",
+        "gradient-x": "gradient-x 5s ease infinite",
       },
       keyframes: {
         "border-beam": {
@@ -92,6 +93,14 @@ export default {
           "100%": {
             opacity: "1",
             transform: "translate(-50%,-40%) scale(1)",
+          },
+        },
+        "gradient-x": {
+          "0%, 100%": {
+            "background-position": "0% 50%",
+          },
+          "50%": {
+            "background-position": "100% 50%",
           },
         },
       },
