@@ -15,6 +15,10 @@
     "@alpha-agents/services": "workspace:*",
     "@alpha-agents/shared": "workspace:*",
     "@headlessui/react": "^2.2.4",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.4.2",
+    "@splinetool/react-spline": "^4.1.0",
+    "@splinetool/runtime": "^1.12.6",
     "@types/nodemailer": "^6.4.17",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -27,6 +31,7 @@
     "react-dom": "^19.0.0",
     "resend": "^4.5.1",
     "tailwind-merge": "^2.6.0",
+    "three": "^0.181.2",
     "tsx": "^4.7.0"
   },
   "devDependencies": {

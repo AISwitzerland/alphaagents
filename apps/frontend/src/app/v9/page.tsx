@@ -1,17 +1,17 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight, Sparkles, Zap, Shield, Clock,
   FileText, MessageSquare, Mail, Brain, Play, Star,
-  ChevronRight, Check, ArrowUpRight, Users, Building2,
-  Globe, Award, TrendingUp, Lock, CheckCircle2
+  Check, Users, Building2, Globe, Award, TrendingUp, Lock, CheckCircle2
 } from 'lucide-react';
+import { DotShaderBackground } from '@/components/ui/dot-shader-background';
 
-// V9: CLEAN PROFESSIONAL - BENTO GRID LAYOUT
-// Light mode, subtle gradients, bento grid, enterprise focus
+// V9: CLEAN PROFESSIONAL - BENTO GRID + DOT SHADER BACKGROUND
+// Interactive shader background, light mode, subtle gradients
 
 export default function CleanProfessionalPage() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -37,7 +37,6 @@ export default function CleanProfessionalPage() {
       metric: '99.7%',
       metricLabel: 'Genauigkeit',
       color: 'bg-blue-500',
-      size: 'large'
     },
     { 
       icon: MessageSquare, 
@@ -46,7 +45,6 @@ export default function CleanProfessionalPage() {
       metric: '24/7',
       metricLabel: 'Verfügbar',
       color: 'bg-violet-500',
-      size: 'medium'
     },
     { 
       icon: Mail, 
@@ -55,7 +53,6 @@ export default function CleanProfessionalPage() {
       metric: '80%',
       metricLabel: 'Zeitersparnis',
       color: 'bg-emerald-500',
-      size: 'medium'
     },
     { 
       icon: Brain, 
@@ -64,7 +61,6 @@ export default function CleanProfessionalPage() {
       metric: '∞',
       metricLabel: 'Skalierbar',
       color: 'bg-orange-500',
-      size: 'small'
     },
   ];
 
@@ -100,36 +96,11 @@ export default function CleanProfessionalPage() {
     'Swiss Re', 'UBS', 'Novartis', 'Nestlé', 'ABB', 'Swisscom'
   ];
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
-
   return (
-    <div className="min-h-screen bg-[#FAFBFC] text-slate-900 overflow-x-hidden">
-      {/* Subtle Background */}
-      <div className="fixed inset-0 pointer-events-none">
-        {/* Gradient mesh */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(59,130,246,0.08),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_80%_50%,rgba(139,92,246,0.05),transparent)]" />
-        
-        {/* Dot pattern */}
-        <div 
-          className="absolute inset-0 opacity-[0.4]"
-          style={{
-            backgroundImage: 'radial-gradient(circle at center, #CBD5E1 1px, transparent 1px)',
-            backgroundSize: '24px 24px'
-          }}
-        />
+    <div className="min-h-screen bg-[#F4F5F5] text-slate-900 overflow-x-hidden relative">
+      {/* Interactive Dot Shader Background */}
+      <div className="fixed inset-0 z-0">
+        <DotShaderBackground theme="light" className="w-full h-full" />
       </div>
 
       {/* Navigation */}
@@ -180,7 +151,7 @@ export default function CleanProfessionalPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-6">
+      <section className="relative pt-32 pb-20 px-6 z-10">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             className="text-center max-w-4xl mx-auto mb-16"
@@ -211,7 +182,7 @@ export default function CleanProfessionalPage() {
             </motion.div>
 
             {/* Main Heading */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 text-slate-900">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 text-slate-900 mix-blend-exclusion">
               KI-Automatisierung
               <br />
               <span className="bg-gradient-to-r from-blue-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
@@ -256,11 +227,7 @@ export default function CleanProfessionalPage() {
           </motion.div>
 
           {/* Bento Grid */}
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-6xl mx-auto"
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 1 }}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
             {/* Large Card - Document AI */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -268,8 +235,7 @@ export default function CleanProfessionalPage() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="md:col-span-2 md:row-span-2 group"
             >
-              <div className="h-full bg-white rounded-3xl p-8 border border-slate-200/50 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-blue-200/30 transition-all duration-300 overflow-hidden relative">
-                {/* Background Gradient */}
+              <div className="h-full bg-white/90 backdrop-blur-sm rounded-3xl p-8 border border-slate-200/50 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-blue-200/30 transition-all duration-300 overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-50" />
                 
                 <div className="relative z-10">
@@ -289,7 +255,6 @@ export default function CleanProfessionalPage() {
                     Unsere KI extrahiert alle relevanten Daten mit höchster Präzision.
                   </p>
 
-                  {/* Feature Pills */}
                   <div className="flex flex-wrap gap-2 mb-6">
                     {['OCR', 'PDF-Parsing', 'Handschrift', 'Multi-Sprache'].map((tag) => (
                       <span key={tag} className="px-3 py-1 bg-blue-50 text-blue-600 text-sm font-medium rounded-full">
@@ -298,7 +263,6 @@ export default function CleanProfessionalPage() {
                     ))}
                   </div>
 
-                  {/* Demo Preview */}
                   <div className="relative aspect-video bg-slate-100 rounded-2xl overflow-hidden group-hover:scale-[1.02] transition-transform">
                     <img 
                       src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" 
@@ -320,7 +284,7 @@ export default function CleanProfessionalPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="md:col-span-2 group"
             >
-              <div className="h-full bg-white rounded-3xl p-6 border border-slate-200/50 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-violet-200/30 transition-all duration-300 relative overflow-hidden">
+              <div className="h-full bg-white/90 backdrop-blur-sm rounded-3xl p-6 border border-slate-200/50 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-violet-200/30 transition-all duration-300 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-50 to-transparent opacity-50" />
                 
                 <div className="relative z-10 flex items-start justify-between">
@@ -348,7 +312,7 @@ export default function CleanProfessionalPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="group"
             >
-              <div className="h-full bg-white rounded-3xl p-6 border border-slate-200/50 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-emerald-200/30 transition-all duration-300 relative overflow-hidden">
+              <div className="h-full bg-white/90 backdrop-blur-sm rounded-3xl p-6 border border-slate-200/50 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-emerald-200/30 transition-all duration-300 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 to-transparent opacity-50" />
                 
                 <div className="relative z-10">
@@ -370,7 +334,7 @@ export default function CleanProfessionalPage() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="group"
             >
-              <div className="h-full bg-white rounded-3xl p-6 border border-slate-200/50 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-orange-200/30 transition-all duration-300 relative overflow-hidden">
+              <div className="h-full bg-white/90 backdrop-blur-sm rounded-3xl p-6 border border-slate-200/50 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-orange-200/30 transition-all duration-300 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-transparent opacity-50" />
                 
                 <div className="relative z-10">
@@ -382,12 +346,12 @@ export default function CleanProfessionalPage() {
                 </div>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-24 px-6 bg-white border-y border-slate-200/50">
+      <section className="py-24 px-6 bg-white/80 backdrop-blur-sm border-y border-slate-200/50 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -411,7 +375,7 @@ export default function CleanProfessionalPage() {
       </section>
 
       {/* Testimonials */}
-      <section id="customers" className="py-24 px-6">
+      <section id="customers" className="py-24 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <span className="inline-block text-sm font-semibold text-blue-600 mb-4">KUNDENSTIMMEN</span>
@@ -428,7 +392,7 @@ export default function CleanProfessionalPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white rounded-3xl p-8 md:p-12 shadow-xl shadow-slate-200/50 border border-slate-200/50"
+                className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-xl shadow-slate-200/50 border border-slate-200/50"
               >
                 <div className="flex flex-col md:flex-row items-start gap-8">
                   <img 
@@ -443,7 +407,7 @@ export default function CleanProfessionalPage() {
                       ))}
                     </div>
                     <blockquote className="text-2xl font-medium text-slate-900 mb-6 leading-relaxed">
-                      "{testimonials[activeTestimonial].quote}"
+                      &ldquo;{testimonials[activeTestimonial].quote}&rdquo;
                     </blockquote>
                     <div>
                       <div className="font-semibold text-slate-900">{testimonials[activeTestimonial].author}</div>
@@ -454,7 +418,6 @@ export default function CleanProfessionalPage() {
               </motion.div>
             </AnimatePresence>
 
-            {/* Dots */}
             <div className="flex justify-center gap-2 mt-8">
               {testimonials.map((_, index) => (
                 <button
@@ -473,7 +436,7 @@ export default function CleanProfessionalPage() {
       </section>
 
       {/* Trust Section */}
-      <section className="py-24 px-6 bg-slate-900 text-white">
+      <section className="py-24 px-6 bg-slate-900 text-white relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
@@ -542,7 +505,7 @@ export default function CleanProfessionalPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6">
+      <section className="py-24 px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="bg-gradient-to-br from-blue-600 to-violet-600 rounded-3xl p-12 md:p-16 text-center text-white shadow-2xl shadow-blue-600/25">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -575,7 +538,7 @@ export default function CleanProfessionalPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 bg-white border-t border-slate-200">
+      <footer className="py-12 bg-white/80 backdrop-blur-sm border-t border-slate-200 relative z-10">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="flex items-center space-x-3 mb-4 md:mb-0">
@@ -601,7 +564,7 @@ export default function CleanProfessionalPage() {
       {/* Version Indicator */}
       <div className="fixed bottom-4 left-4 bg-white text-slate-600 px-4 py-2 rounded-full text-xs font-medium z-50 flex items-center space-x-2 border border-slate-200 shadow-lg">
         <Sparkles className="w-3 h-3 text-blue-500" />
-        <span>V9: Clean Professional</span>
+        <span>V9: Dot Shader</span>
       </div>
       
       {/* Version Navigation */}
@@ -623,4 +586,3 @@ export default function CleanProfessionalPage() {
     </div>
   );
 }
-
