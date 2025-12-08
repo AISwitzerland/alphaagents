@@ -573,7 +573,6 @@ export default function DarkGoldPremiumPage() {
         <Link href="/v6" className="bg-gradient-to-r from-[#C9A962] to-[#8B7355] text-[#0A0A0A] px-3 py-1.5 rounded-full text-xs font-bold">V6</Link>
         <Link href="/v7" className="bg-white/10 text-white px-3 py-1.5 rounded-full text-xs font-medium hover:bg-white/20 transition-colors">V7</Link>
         <Link href="/v8" className="bg-white/10 text-white px-3 py-1.5 rounded-full text-xs font-medium hover:bg-white/20 transition-colors">V8</Link>
-        <Link href="/v10" className="bg-white/10 text-white px-3 py-1.5 rounded-full text-xs font-medium hover:bg-white/20 transition-colors">V10</Link>
       </div>
     </div>
   );
