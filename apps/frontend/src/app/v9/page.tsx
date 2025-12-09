@@ -240,15 +240,6 @@ export default function FullServicePage() {
   };
 
 
-  // Typing cursor
-  const TypingCursor = () => (
-    <motion.span
-      className="inline-block w-0.5 h-8 bg-cyan-400 ml-1"
-      animate={{ opacity: [1, 0, 1] }}
-      transition={{ duration: 0.8, repeat: Infinity }}
-    />
-  );
-
   // Glowing text effect
   const GlowText = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
     <span className={`relative ${className}`}>
@@ -409,7 +400,6 @@ export default function FullServicePage() {
                 <div className="h-12 mb-8">
                   <p className="text-lg text-slate-400">
                     <span className="text-cyan-400">→</span> {typedText}
-                    <TypingCursor />
                   </p>
                 </div>
 
