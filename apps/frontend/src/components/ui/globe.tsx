@@ -62,7 +62,7 @@ export function Globe({
 
   const onRender = useCallback(
     (state: Record<string, any>) => {
-      if (!pointerInteracting.current) phi += 0.005
+      if (pointerInteracting.current === null) phi += 0.002 // Slower rotation
       state.phi = phi + r
       state.width = width * 2
       state.height = width * 2
